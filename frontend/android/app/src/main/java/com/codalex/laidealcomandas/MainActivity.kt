@@ -1,4 +1,4 @@
-package com.codalex.deleitecomandas
+package com.codalex.laidealcomandas
 
 import android.os.Build
 import android.os.Bundle

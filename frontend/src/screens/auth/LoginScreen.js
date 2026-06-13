@@ -198,7 +198,7 @@ export default function LoginScreen() {
 
             <TextInput
               style={styles.modalInput}
-              placeholder="192.168.1.16"
+              placeholder="192.168.1.7"
               placeholderTextColor="#a19c90"
               value={ipInput}
               onChangeText={setIpInput}

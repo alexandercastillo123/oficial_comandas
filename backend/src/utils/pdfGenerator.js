@@ -57,7 +57,7 @@ async function generarTicketCocina(comanda) {
     doc.pipe(stream);
 
     // Encabezado
-    doc.fontSize(12).font('Helvetica-Bold').text('DELEITE S.A.C.', { align: 'center' });
+    doc.fontSize(12).font('Helvetica-Bold').text('LA IDEAL S.A.C.', { align: 'center' });
     doc.fontSize(10).font('Helvetica-Bold').text('TICKET DE COCINA', { align: 'center' });
     doc.moveDown(0.3);
 
@@ -134,8 +134,8 @@ async function generarPreCuenta(comanda) {
     doc.pipe(stream);
 
     // Encabezado
-    doc.fontSize(12).font('Helvetica-Bold').text('DELEITE S.A.C.', { align: 'center' });
-    doc.fontSize(9).font('Helvetica').text('Panadería y Pastelería', { align: 'center' });
+    doc.fontSize(12).font('Helvetica-Bold').text('LA IDEAL S.A.C.', { align: 'center' });
+    doc.fontSize(9).font('Helvetica').text('Cafetería y Pastelería', { align: 'center' });
     doc.fontSize(10).font('Helvetica-Bold').text('PRE-CUENTA DE CONSUMO', { align: 'center' });
     doc.moveDown(0.3);
 

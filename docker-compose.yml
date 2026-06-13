@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  deleite_sql_local:
+  la_ideal_sql_local:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: deleite_sql_local
+    container_name: la_ideal_sql_local
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Express
@@ -13,13 +13,13 @@ services:
     volumes:
       - sql_data:/var/opt/mssql
 
-  deleite_api_local:
+  la_ideal_api_local:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: deleite_api_local
+    container_name: la_ideal_api_local
     environment:
-      - DB_LOCAL_HOST=deleite_sql_local
+      - DB_LOCAL_HOST=la_ideal_sql_local
       - DB_LOCAL_PORT=1433
       - DB_LOCAL_USER=${DB_LOCAL_USER}
       - DB_LOCAL_PASS=${DB_LOCAL_PASS}      # <-- CORREGIDO: Coincide exactamente con tu db.js
@@ -41,7 +41,7 @@ services:
       - ./backend:/app
       - /app/node_modules
     depends_on:
-      - deleite_sql_local
+      - la_ideal_sql_local
     command: ["npm", "run", "dev"]
 
 volumes:

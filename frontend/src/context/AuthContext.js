@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import { storage } from '../utils/storage';
 import { api } from '../services/api';
 
-const AUTH_KEY = '@deleite_auth_state';
+const AUTH_KEY = '@la_ideal_auth_state';
 
 const initialState = {
   isLoading: true,

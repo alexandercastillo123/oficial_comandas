@@ -9,10 +9,10 @@ async function login(username, password) {
   }
 
   // Soporte para contraseña por defecto en el script SQL de inicialización
-  const isDefaultHash = user.clave === '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx';
+  const isDefaultHash = user.clave === '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx';
   let isPasswordValid = false;
 
-  if (isDefaultHash && password === 'Deleite2026') {
+  if (isDefaultHash && password === 'Ideal2026') {
     isPasswordValid = true;
   } else {
     try {
@@ -47,7 +47,7 @@ async function login(username, password) {
 
   const token = jwt.sign(
     payload,
-    process.env.JWT_SECRET || 'super_secret_jwt_key_deleite_2026',
+    process.env.JWT_SECRET || 'super_secret_jwt_key_la_ideal_2026',
     { expiresIn: '24h' }
   );
 

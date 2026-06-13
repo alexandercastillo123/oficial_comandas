@@ -1,7 +1,7 @@
 {
-  "name": "deleite-comandas-backend",
+  "name": "la-ideal-comandas-backend",
   "version": "1.0.0",
-  "description": "API REST para el Módulo de Comandas de Panadería y Pastelería Deleite S.A.C.",
+  "description": "API REST para el Módulo de Comandas de la Cafetería La Ideal S.A.C.",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

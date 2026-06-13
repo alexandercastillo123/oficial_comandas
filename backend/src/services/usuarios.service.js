@@ -13,7 +13,7 @@ async function getTrabajador(id) {
 
 async function crearTrabajador(userData, tiendaId) {
   const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(userData.clave || 'Deleite2026', salt);
+  const hash = await bcrypt.hash(userData.clave || 'Ideal2026', salt);
   const payload = { ...userData, clave: hash };
 
   const userId = await usuariosRepo.create(payload);

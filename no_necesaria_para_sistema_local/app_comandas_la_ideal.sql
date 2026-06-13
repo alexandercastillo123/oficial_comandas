@@ -1,7 +1,7 @@
-﻿/*
+/*
 ================================================================================
-  BASE DE DATOS: app_comandas_deleite
-  PROYECTO    : Módulo de Comandas - App Móvil (Panadería y Pastelería Deleite S.A.C.)
+  BASE DE DATOS: la_ideal_cafeteria
+  PROYECTO    : Módulo de Comandas - App Móvil (Panadería y Pastelería La Ideal S.A.C.)
   RUC         : 20609341867
   MOTOR       : SQL Server 2019+
   ORIGEN      : Adaptación de app_pan_rico (MySQL) al módulo de comandas
@@ -21,12 +21,12 @@
 
 USE master;
 GO
-IF DB_ID('app_comandas_deleite') IS NOT NULL
-    DROP DATABASE app_comandas_deleite;
+IF DB_ID('la_ideal_cafeteria') IS NOT NULL
+    DROP DATABASE la_ideal_cafeteria;
 GO
-CREATE DATABASE app_comandas_deleite COLLATE Modern_Spanish_CI_AI;
+CREATE DATABASE la_ideal_cafeteria COLLATE Modern_Spanish_CI_AI;
 GO
-USE app_comandas_deleite;
+USE la_ideal_cafeteria;
 GO
 
 SET NOCOUNT ON;
@@ -95,10 +95,7 @@ CREATE TABLE usuario (
     fecha_creacion       DATETIME2     NULL DEFAULT GETDATE(),       -- [⚠ MYSQL→SQLSVR] DATETIME → DATETIME2
     fecha_actualizacion  DATETIME2     NULL,                         -- [⚠ MYSQL→SQLSVR]
     usuario_creacion     INT           NULL,                         -- [✔ ORIGINAL]
-    usuario_actualizacion INT          NULL,                         -- [✔ ORIGINAL]
-    sync_estado          TINYINT       NOT NULL DEFAULT 0,           -- [★ SYNC] 0=pending,1=sincronizado,2=error
-    sync_fecha           DATETIME2     NULL,                         -- [★ SYNC] Última sincronización con la nube
-    sync_intentos         INT           NOT NULL DEFAULT 0           -- [★ SYNC] Reintentos automáticos
+    usuario_actualizacion INT          NULL                          -- [✔ ORIGINAL]
 );
 GO
 
@@ -120,9 +117,6 @@ CREATE TABLE usuario_tienda (
     estado             BIT      NOT NULL DEFAULT 1,          -- [⚠ MYSQL→SQLSVR]
     fecha_creacion     DATETIME2 NOT NULL DEFAULT GETDATE(), -- [⚠ MYSQL→SQLSVR]
     usuario_creacion   INT      NULL,                        -- [✔ ORIGINAL]
-    sync_estado        TINYINT  NOT NULL DEFAULT 0,          -- [★ SYNC] 0=pending,1=sincronizado,2=error
-    sync_fecha         DATETIME2 NULL,                       -- [★ SYNC] Última sincronización con la nube
-    sync_intentos      INT      NOT NULL DEFAULT 0,          -- [★ SYNC] Reintentos automáticos
     CONSTRAINT uq_usuario_tienda UNIQUE (id_usuario, id_tienda)  -- [✔ ORIGINAL]
 );
 GO
@@ -205,18 +199,15 @@ GO
      1 mesa   → N comanda_cab
    ============================================================ */
 CREATE TABLE mesa (
-    id_mesa       INT           IDENTITY(1,1) PRIMARY KEY,   -- [★ NUEVO]
-    id_tienda     INT           NOT NULL REFERENCES tienda(id_tienda),  -- [★ NUEVO] Sucursal a la que pertenece
-    numero        VARCHAR(20)   NOT NULL,                     -- [★ NUEVO] Nombre/número ej: 'Mesa 1', 'Barra A'
-    capacidad     INT           NULL,                         -- [★ NUEVO] Nro máximo de personas (informativo)
-    estado_mesa   VARCHAR(15)   NOT NULL DEFAULT 'LIBRE'      -- [★ NUEVO] Estado visual: 'LIBRE'|'OCUPADA'|'PRE_CUENTA'
+    id_mesa       INT          IDENTITY(1,1) PRIMARY KEY,   -- [★ NUEVO]
+    id_tienda     INT          NOT NULL REFERENCES tienda(id_tienda),  -- [★ NUEVO] Sucursal a la que pertenece
+    numero        VARCHAR(20)  NOT NULL,                     -- [★ NUEVO] Nombre/número ej: 'Mesa 1', 'Barra A'
+    capacidad     INT          NULL,                         -- [★ NUEVO] Nro máximo de personas (informativo)
+    estado_mesa   VARCHAR(15)  NOT NULL DEFAULT 'LIBRE'      -- [★ NUEVO] Estado visual: 'LIBRE'|'OCUPADA'|'PRE_CUENTA'
         CHECK (estado_mesa IN ('LIBRE','OCUPADA','PRE_CUENTA')),
-    estado        BIT           NOT NULL DEFAULT 1,           -- [★ NUEVO] 1=activo, 0=eliminada lógicamente
-    sync_estado   TINYINT       NOT NULL DEFAULT 0,           -- [★ SYNC] 0=pending,1=sincronizado,2=error
-    sync_fecha    DATETIME2     NULL,                         -- [★ SYNC] Última vez que se sincronizó con la nube
-    sync_intentos INT           NOT NULL DEFAULT 0,           -- [★ SYNC] Contador de reintentos de sync
-    fecha_creacion DATETIME2    NOT NULL DEFAULT GETDATE(),   -- [★ NUEVO]
-    usuario_creacion INT        NULL,                         -- [★ NUEVO] Quién creó la mesa (admin)
+    estado        BIT          NOT NULL DEFAULT 1,           -- [★ NUEVO] 1=activo, 0=eliminada lógicamente
+    fecha_creacion DATETIME2   NOT NULL DEFAULT GETDATE(),   -- [★ NUEVO]
+    usuario_creacion INT       NULL,                         -- [★ NUEVO] Quién creó la mesa (admin)
     CONSTRAINT uq_mesa_tienda_numero UNIQUE (id_tienda, numero)  -- [★ NUEVO] No puede haber 2 mesas con mismo número en misma tienda
 );
 GO
@@ -251,9 +242,6 @@ CREATE TABLE comanda_cab (
     total               DECIMAL(10,2) NOT NULL DEFAULT 0.00,        -- [★ NUEVO] Total de la comanda
     reimpresiones       INT           NOT NULL DEFAULT 0,           -- [★ NUEVO] Contador de veces que se reimprimió en cocina
     observacion         VARCHAR(255)  NULL,                         -- [★ NUEVO] Nota general del pedido al chef
-    sync_estado         TINYINT       NOT NULL DEFAULT 0,           -- [★ SYNC] 0=pending,1=sincronizado,2=error
-    sync_fecha          DATETIME2     NULL,                         -- [★ SYNC] Última sincronización con la nube
-    sync_intentos       INT           NOT NULL DEFAULT 0,           -- [★ SYNC] Reintentos automáticos
     fecha_creacion      DATETIME2     NOT NULL DEFAULT GETDATE(),   -- [★ NUEVO] Momento en que se mandó a cocina
     fecha_actualizacion DATETIME2     NULL,                         -- [★ NUEVO] Último cambio de estado
     usuario_creacion    INT           NULL                          -- [★ NUEVO] FK implícita → id_usuario_mozo
@@ -286,44 +274,10 @@ CREATE TABLE comanda_det (
     descuento         DECIMAL(10,2) NOT NULL DEFAULT 0.00,      -- [★ NUEVO]
     subtotal          DECIMAL(10,2) NOT NULL,                   -- [★ NUEVO] (cantidad * precio_unitario) - descuento
     observacion_item  VARCHAR(255)  NULL,                       -- [★ NUEVO] Nota del mozo por ítem ej: 'sin cebolla', 'término 3/4'
-    sync_estado       TINYINT       NOT NULL DEFAULT 0,         -- [★ SYNC] 0=pending,1=sincronizado,2=error
-    sync_fecha        DATETIME2     NULL,                       -- [★ SYNC] Última sincronización con la nube
-    sync_intentos     INT           NOT NULL DEFAULT 0,         -- [★ SYNC] Reintentos automáticos
+    estado_item       VARCHAR(20)   NOT NULL DEFAULT 'PENDIENTE'  -- [★ NUEVO] Estado por producto
+        CHECK (estado_item IN ('PENDIENTE','EN_PREPARACION','LISTO','ENTREGADO')),
     fecha_creacion    DATETIME2     NOT NULL DEFAULT GETDATE()   -- [★ NUEVO]
 );
-GO
-
-/* ============================================================
-   13. SYNC_CONTROL — Tabla de control de sincronización
-   Registra la última fecha de descarga y subida por tabla
-   para sincronización bidireccional local <-> nube.
-   Cada sucursal tiene su propio registro.
-   ============================================================ */
-CREATE TABLE sync_control (
-    id_sync_control INT IDENTITY(1,1) PRIMARY KEY,
-    id_tienda       INT NOT NULL REFERENCES tienda(id_tienda),
-    tabla           VARCHAR(50) NOT NULL,
-    ultima_descarga DATETIME2 NULL,
-    ultima_subida   DATETIME2 NULL,
-    estado          VARCHAR(20) NOT NULL DEFAULT 'OK',
-    mensaje_error   VARCHAR(255) NULL,
-    fecha_actualizacion DATETIME2 NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT uq_sync_control_tienda_tabla UNIQUE (id_tienda, tabla)
-);
-GO
-CREATE INDEX IX_sync_control_tienda ON sync_control(id_tienda);
-GO
-
-/* Datos iniciales de sincronización para TIENDA 1 (busca id_tienda por descripcion para no depender de numeros fijos) */
-INSERT INTO sync_control (id_tienda, tabla, estado)
-SELECT t.id_tienda, v.tabla, v.estado
-FROM tienda t
-CROSS JOIN (VALUES
-    ('tienda'), ('cargo'), ('usuario'), ('usuario_tienda'),
-    ('grupo'), ('categoria'), ('producto'), ('moneda'),
-    ('unidad_medida'), ('mesa'), ('comanda_cab'), ('comanda_det')
-) v(tabla, estado)
-WHERE t.descripcion = 'TIENDA 1';
 GO
 
 CREATE INDEX IX_comanda_det_cab ON comanda_det(id_comanda_cab);  -- [★ NUEVO]
@@ -555,41 +509,41 @@ GO
    Se insertan todos los usuarios con cargos relevantes para comandas:
    Administrador, Chef, Mozo (id_cargo=14).
    Los Jefes de tienda se incluyen como ADMIN en la app.
-   CLAVE POR DEFECTO: 'Deleite2026' (hash bcrypt de ejemplo)
+   CLAVE POR DEFECTO: 'Ideal2026' (hash bcrypt de ejemplo)
    IMPORTANTE: En producción cambiar claves individualmente.
    ============================================================ */
 SET IDENTITY_INSERT usuario ON;
 INSERT INTO usuario (id_usuario, nombre, direccion, telefono, documento_identidad, usuario, clave, id_cargo, estado, avatar_url, token_fcm, fecha_creacion, fecha_actualizacion, usuario_creacion, usuario_actualizacion) VALUES
-    (1, 'FRANKLYN EDUARDO AQUINO QUISPE', NULL, NULL, NULL, 'FRANKLYN.AQUINO', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 1, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (2, 'SONIA LEON TAFUR', NULL, NULL, NULL, 'SONIA.LEON', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (3, 'MAGALY AYAY HUACCHA', NULL, NULL, NULL, 'MAGALY.AYAY', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (4, 'LUZ VARGAS CHAVEZ', NULL, NULL, NULL, 'LUZ.VARGAS', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (5, 'CARMEN ROSA VARGAS SANGAY', NULL, NULL, NULL, 'CARMEN.VARGAS', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (6, 'MAGALY PERALTA ACUÑA', NULL, NULL, NULL, 'MAGALY.PERALTA', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (7, 'JUANA PAICO MALIMBA', NULL, NULL, NULL, 'JUANA.PAICO', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (8, 'MARIA YANETH MONSEFU ROMERO', NULL, NULL, NULL, 'YANETH.MONSEFU', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (9, 'MARDELY LISETH RIOS ROJAS', NULL, NULL, NULL, 'LISETH.RIOS', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (10, 'LISBET PEREZ CIEZA', NULL, NULL, NULL, 'LISBET.PEREZ', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (11, 'NATALIA VARGAS CHAVEZ', NULL, NULL, NULL, 'NATALIA.VARGAS', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (12, 'ALVARO FRANK VALERA CUEVA', NULL, NULL, NULL, 'ALVARO.VALERA', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (13, 'CRISTINA GUZMAN RIVERO', NULL, NULL, NULL, 'CRISTINA.GUZMAN', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (14, 'JHOANA BARBOZA GIL', NULL, NULL, NULL, 'JHOANA.BARBOZA', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (15, 'WILLIAM WALTER TASILLA LLANOS', NULL, NULL, NULL, 'WILLIAM.TASILLA', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (16, 'ELIZ BELTRANA RIVERO RODRIGUEZ', NULL, NULL, NULL, 'ELIS.RIVERO', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (17, 'LILIANA LOPEZ POMPA', NULL, NULL, NULL, 'LILIANA.LOPEZ', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (18, 'JHEILLER CHAVEZ CACHAY', NULL, NULL, NULL, 'JHEILLER.CHAVEZ', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (19, 'MARIA ISABEL HILASACA VILCA', NULL, NULL, NULL, 'ISABEL.HILASACA', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (20, 'JOSUE PERALTA ACUÑA', NULL, NULL, NULL, 'JOSUE.PERALTA', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (21, 'LIZ JHANET BARBOZA GIL', NULL, NULL, NULL, 'LIZ.JHANET', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (30, 'MOZO TIENDA 1', NULL, NULL, NULL, 'MOZO.T1', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (31, 'MOZO TIENDA 2', NULL, NULL, NULL, 'MOZO.T2', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (32, 'MOZO TIENDA 3', NULL, NULL, NULL, 'MOZO.T3', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (33, 'MOZO TIENDA 4', NULL, NULL, NULL, 'MOZO.T4', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (34, 'MOZO TIENDA 5', NULL, NULL, NULL, 'MOZO.T5', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (35, 'MOZO TIENDA 6', NULL, NULL, NULL, 'MOZO.T6', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (36, 'MOZO TIENDA 7', NULL, NULL, NULL, 'MOZO.T7', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (37, 'MOZO TIENDA 9', NULL, NULL, NULL, 'MOZO.T9', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
-    (38, 'MOZO TIENDA 10', NULL, NULL, NULL, 'MOZO.T10', '$2y$10$TuClaveHashBcryptAqui.DeleiteDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL);
+    (1, 'FRANKLYN EDUARDO AQUINO QUISPE', NULL, NULL, NULL, 'FRANKLYN.AQUINO', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 1, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (2, 'SONIA LEON TAFUR', NULL, NULL, NULL, 'SONIA.LEON', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (3, 'MAGALY AYAY HUACCHA', NULL, NULL, NULL, 'MAGALY.AYAY', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (4, 'LUZ VARGAS CHAVEZ', NULL, NULL, NULL, 'LUZ.VARGAS', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (5, 'CARMEN ROSA VARGAS SANGAY', NULL, NULL, NULL, 'CARMEN.VARGAS', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (6, 'MAGALY PERALTA ACUÑA', NULL, NULL, NULL, 'MAGALY.PERALTA', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (7, 'JUANA PAICO MALIMBA', NULL, NULL, NULL, 'JUANA.PAICO', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (8, 'MARIA YANETH MONSEFU ROMERO', NULL, NULL, NULL, 'YANETH.MONSEFU', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (9, 'MARDELY LISETH RIOS ROJAS', NULL, NULL, NULL, 'LISETH.RIOS', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (10, 'LISBET PEREZ CIEZA', NULL, NULL, NULL, 'LISBET.PEREZ', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 8, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (11, 'NATALIA VARGAS CHAVEZ', NULL, NULL, NULL, 'NATALIA.VARGAS', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (12, 'ALVARO FRANK VALERA CUEVA', NULL, NULL, NULL, 'ALVARO.VALERA', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (13, 'CRISTINA GUZMAN RIVERO', NULL, NULL, NULL, 'CRISTINA.GUZMAN', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (14, 'JHOANA BARBOZA GIL', NULL, NULL, NULL, 'JHOANA.BARBOZA', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (15, 'WILLIAM WALTER TASILLA LLANOS', NULL, NULL, NULL, 'WILLIAM.TASILLA', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (16, 'ELIZ BELTRANA RIVERO RODRIGUEZ', NULL, NULL, NULL, 'ELIS.RIVERO', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (17, 'LILIANA LOPEZ POMPA', NULL, NULL, NULL, 'LILIANA.LOPEZ', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (18, 'JHEILLER CHAVEZ CACHAY', NULL, NULL, NULL, 'JHEILLER.CHAVEZ', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (19, 'MARIA ISABEL HILASACA VILCA', NULL, NULL, NULL, 'ISABEL.HILASACA', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (20, 'JOSUE PERALTA ACUÑA', NULL, NULL, NULL, 'JOSUE.PERALTA', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (21, 'LIZ JHANET BARBOZA GIL', NULL, NULL, NULL, 'LIZ.JHANET', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 4, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (30, 'MOZO TIENDA 1', NULL, NULL, NULL, 'MOZO.T1', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (31, 'MOZO TIENDA 2', NULL, NULL, NULL, 'MOZO.T2', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (32, 'MOZO TIENDA 3', NULL, NULL, NULL, 'MOZO.T3', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (33, 'MOZO TIENDA 4', NULL, NULL, NULL, 'MOZO.T4', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (34, 'MOZO TIENDA 5', NULL, NULL, NULL, 'MOZO.T5', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (35, 'MOZO TIENDA 6', NULL, NULL, NULL, 'MOZO.T6', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (36, 'MOZO TIENDA 7', NULL, NULL, NULL, 'MOZO.T7', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (37, 'MOZO TIENDA 9', NULL, NULL, NULL, 'MOZO.T9', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL),
+    (38, 'MOZO TIENDA 10', NULL, NULL, NULL, 'MOZO.T10', '$2y$10$TuClaveHashBcryptAqui.IdealDefaultPwd2026xxxxx', 14, 1, NULL, NULL, GETDATE(), NULL, NULL, NULL);
 SET IDENTITY_INSERT usuario OFF;
 GO
 
@@ -845,5 +799,5 @@ GO
           cada 5s y re-renderiza la lista.
    ============================================================ */
 
-PRINT 'Base de datos app_comandas_deleite creada correctamente.';
+PRINT 'Base de datos la_ideal_cafeteria creada correctamente.';
 GO

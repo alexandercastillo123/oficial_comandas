@@ -1,4 +1,4 @@
-# Documentación: Deleite Comandas — Despliegue y arquitectura
+# Documentación: La Ideal Comandas — Despliegue y arquitectura
 
 ## 1. Visión general
 
@@ -102,7 +102,7 @@ oficial/
 │       ├── services/api.js       # Axios dinámico por IP
 │       └── screens/
 └── base_de_datos/
-    └── app_rico_pan_comanda.sql  # Esquema + seed
+    └── app_la_ideal_comanda.sql  # Esquema + seed
 
 docker-compose.yml               # Levanta SQL Server + Backend
 ```
@@ -135,10 +135,10 @@ Editar el archivo `.env` en la raíz (crearlo si no existe):
 ```env
 DB_LOCAL_USER=sa
 DB_LOCAL_PASS=TuPassword123!
-DB_LOCAL_NAME=app_comandas_deleite
+DB_LOCAL_NAME=la_ideal_cafeteria
 DB_LOCAL_PORT=1433
 API_PORT=3000
-JWT_SECRET=super_secret_jwt_key_deleite_2026
+JWT_SECRET=super_secret_jwt_key_la_ideal_2026
 
 # (Opcionales, solo si hay nube)
 # DB_CLOUD_HOST=cloud_sql_server_host
@@ -162,7 +162,7 @@ docker compose up -d --build
 Ver logs:
 
 ```powershell
-docker compose logs -f deleite_api_local
+docker compose logs -f la_ideal_api_local
 ```
 
 Esperar ver:
@@ -182,19 +182,19 @@ El SQL Server tarda unos segundos en estar listo. Verificar que el contenedor es
 docker compose ps
 ```
 
-Cuando `deleite_sql_local` aparezca como `healthy` o `running`, ejecutar el script:
+Cuando `la_ideal_sql_local` aparezca como `healthy` o `running`, ejecutar el script:
 
 Opción A — desde PowerShell (Windows):
 
 ```powershell
-Get-Content base_de_datos\app_rico_pan_comanda.sql -Raw | docker exec -i deleite_sql_local /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "TuPassword123!" -d app_comandas_deleite
+Get-Content base_de_datos\app_la_ideal_comanda.sql -Raw | docker exec -i la_ideal_sql_local /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "TuPassword123!" -d la_ideal_cafeteria
 ```
 
 Opción B — copiar el archivo dentro del contenedor y ejecutarlo:
 
 ```powershell
-docker cp base_de_datos\app_rico_pan_comanda.sql deleite_sql_local:/tmp/script.sql
-docker exec deleite_sql_local /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "TuPassword123!" -d app_comandas_deleite -i /tmp/script.sql
+docker cp base_de_datos\app_la_ideal_comanda.sql la_ideal_sql_local:/tmp/script.sql
+docker exec la_ideal_sql_local /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "TuPassword123!" -d la_ideal_cafeteria -i /tmp/script.sql
 ```
 
 > **Nota**: la primera vez el script incluye `DROP DATABASE` y `CREATE DATABASE`, así que puedes ejecutarlo incluso si ya existía.
@@ -219,18 +219,18 @@ En Windows:
 ipconfig
 ```
 
-Buscar “Adaptador de Ethernet” o “Wi-Fi” y copiar la **Dirección IPv4** (ej: `192.168.1.16`).
+Buscar “Adaptador de Ethernet” o “Wi-Fi” y copiar la **Dirección IPv4** (ej: `192.168.1.7`).
 
 ### 7.7 Configurar el APK
 
 1. Abrir la app en el celular.
 2. En la pantalla de login, presionar el ícono de engranaje (⚙️).
-3. Ingresar la IP del servidor (ej: `192.168.1.16`).
+3. Ingresar la IP del servidor (ej: `192.168.1.7`).
 4. Presionar **“Comprobar conexión”** → debe ponerse verde.
 5. Presionar **“Guardar en Celular”**.
 6. Ingresar usuario y clave. Usuarios de prueba:
-   - `FRANKLYN.AQUINO` / `Deleite2026` (Administrador)
-   - Cualquier mozo (ej: `MOZO.T1`) / `Deleite2026`
+   - `FRANKLYN.AQUINO` / `Ideal2026` (Administrador)
+   - Cualquier mozo (ej: `MOZO.T1`) / `Ideal2026`
 
 ---
 
@@ -239,8 +239,8 @@ Buscar “Adaptador de Ethernet” o “Wi-Fi” y copiar la **Dirección IPv4**
 | Acción | Comando |
 |---|---|
 | Levantar todo | `docker compose up -d --build` |
-| Ver logs backend | `docker compose logs -f deleite_api_local` |
-| Ver logs BD | `docker compose logs -f deleite_sql_local` |
+| Ver logs backend | `docker compose logs -f la_ideal_api_local` |
+| Ver logs BD | `docker compose logs -f la_ideal_sql_local` |
 | Ejecutar SQL inicial | (ver 7.4) |
 | Probar health | `curl http://localhost:3000/health` |
 | Apagar | `docker compose down` |
@@ -274,3 +274,4 @@ Buscar “Adaptador de Ethernet” o “Wi-Fi” y copiar la **Dirección IPv4**
 > Tenemos una app móvil para mozos y chefs. Cada sucursal tiene su servidor y base de datos locales (Docker). Con o sin internet, la sucursal trabaja normal: toma pedidos, imprime tickets, maneja mesas. Cuando hay internet, el sistema sube solo lo nuevo de esa sucursal a la nube, y baja cambios de catálogo (nuevos productos, precios). No se mezclan datos entre sucursales porque cada registro está marcado con su sucursal. El deploy es: clonar el repo, `docker compose up`, cargar el script SQL una sola vez, y darle al celular la IP del servidor.
 
 ---
+

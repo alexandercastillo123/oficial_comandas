@@ -24,7 +24,7 @@ export default function ChefMonitorScreen() {
           <Text style={styles.headerLogo}>🍞</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.headerTitle} numberOfLines={1}>MONITOR DE COCINA</Text>
-            <Text style={styles.headerSubtitle} numberOfLines={1}>Deleite S.A.C. · En Tiempo Real</Text>
+            <Text style={styles.headerSubtitle} numberOfLines={1}>La Ideal S.A.C. · En Tiempo Real</Text>
           </View>
         </View>
         <View style={styles.headerRight}>

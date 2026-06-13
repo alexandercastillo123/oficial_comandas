@@ -19,7 +19,7 @@ function MesasFlowNavigator() {
       <MozoFlowStack.Screen 
         name="MesasMapa" 
         component={MesasMapaScreen} 
-        options={{ title: 'Mesas Deleite S.A.C.' }} 
+        options={{ title: 'Mesas La Ideal S.A.C.' }} 
       />
       <MozoFlowStack.Screen 
         name="DetalleMesa" 

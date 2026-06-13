@@ -1,4 +1,4 @@
-# Manual de Instalación — Deleite Comandas (Producción)
+# Manual de Instalación — La Ideal Comandas (Producción)
 
 ---
 
@@ -22,7 +22,7 @@ oficial/
 │   ├── src/
 │   └── Dockerfile
 ├── base_de_datos/
-│   └── app_rico_pan_comanda.sql
+│   └── app_la_ideal_comanda.sql
 └── README.md
 ```
 
@@ -37,10 +37,10 @@ oficial/
 Abrir `D:\Proyectos Trabajos\oficial\.env` y verificar que tenga:
 
 ```env
-DB_LOCAL_HOST=deleite_sql_local
+DB_LOCAL_HOST=la_ideal_sql_local
 DB_LOCAL_USER=sa
 DB_LOCAL_PASS=SuperSecret123!
-DB_LOCAL_NAME=app_comandas_deleite
+DB_LOCAL_NAME=la_ideal_cafeteria
 ID_TIENDA=2
 ```
 
@@ -62,7 +62,7 @@ docker compose down -v
 
 ### 4.2. Levantar SQL Server
 ```powershell
-docker compose up -d deleite_sql_local
+docker compose up -d la_ideal_sql_local
 ```
 
 ### 4.3. Esperar 20 segundos
@@ -72,14 +72,14 @@ Start-Sleep -Seconds 20
 
 ### 4.4. Ejecutar el script para crear la base de datos con datos iniciales
 ```powershell
-docker run --rm --network=oficial_default -v "D:\Proyectos Trabajos\oficial\base_de_datos\app_rico_pan_comanda.sql:/tmp/script.sql" mcr.microsoft.com/mssql-tools /opt/mssql-tools/bin/sqlcmd -S deleite_sql_local -U sa -P "SuperSecret123!" -d master -i /tmp/script.sql
+docker run --rm --network=oficial_default -v "D:\Proyectos Trabajos\oficial\base_de_datos\app_la_ideal_comanda.sql:/tmp/script.sql" mcr.microsoft.com/mssql-tools /opt/mssql-tools/bin/sqlcmd -S la_ideal_sql_local -U sa -P "SuperSecret123!" -d master -i /tmp/script.sql
 ```
 
-Esto crea la base `app_comandas_deleite`, todas las tablas, catálogos, usuarios de prueba y registros de sincronización.
+Esto crea la base `la_ideal_cafeteria`, todas las tablas, catálogos, usuarios de prueba y registros de sincronización.
 
 ### 4.5. Levantar el backend
 ```powershell
-docker compose up -d deleite_api_local
+docker compose up -d la_ideal_api_local
 ```
 
 ### 4.6. Verificar que todo está corriendo
@@ -88,11 +88,11 @@ docker compose up -d deleite_api_local
 docker compose ps
 ```
 
-Deben ver `deleite_sql_local` y `deleite_api_local` con estado `Up`.
+Deben ver `la_ideal_sql_local` y `la_ideal_api_local` con estado `Up`.
 
 Para ver los logs del backend:
 ```powershell
-docker compose logs -f deleite_api_local
+docker compose logs -f la_ideal_api_local
 ```
 
 Deben ver al final:
@@ -112,13 +112,13 @@ Eso significa que el sistema está funcionando en modo local correctamente.
 1. Instalar el APK en el celular.
 2. Abrir la app.
 3. Presionar el ícono de engranaje (⚙️) en el login.
-4. Ingresar la IP de la computadora (ejemplo: `192.168.1.16`).
+4. Ingresar la IP de la computadora (ejemplo: `192.168.1.7`).
    - Para averiguar la IP en Windows: `ipconfig` y buscar la IP del adaptador Wi-Fi/Ethernet.
 5. Presionar **"Comprobar conexión"** → debe ponerse verde.
 6. Presionar **"Guardar en Celular"**.
 7. Hacer login:
    - Usuario: `FRANKLYN.AQUINO`
-   - Contraseña: `Deleite2026`
+   - Contraseña: `Ideal2026`
 
 ---
 
@@ -126,11 +126,11 @@ Eso significa que el sistema está funcionando en modo local correctamente.
 
 | Acción | Comando |
 |:---|:---|
-| Ver logs del backend | `docker compose logs -f deleite_api_local` |
-| Ver logs de SQL Server | `docker compose logs -f deleite_sql_local` |
-| **Parar solo el backend** | `docker compose stop deleite_api_local` |
-| **Iniciar solo el backend** | `docker compose start deleite_api_local` |
-| Reiniciar el backend | `docker compose restart deleite_api_local` |
+| Ver logs del backend | `docker compose logs -f la_ideal_api_local` |
+| Ver logs de SQL Server | `docker compose logs -f la_ideal_sql_local` |
+| **Parar solo el backend** | `docker compose stop la_ideal_api_local` |
+| **Iniciar solo el backend** | `docker compose start la_ideal_api_local` |
+| Reiniciar el backend | `docker compose restart la_ideal_api_local` |
 | Ver estado de los servicios | `docker compose ps` |
 | Apagar TODO el sistema | `docker compose down` |
 | **Resetear TODO (borrar datos)** | `docker compose down -v` (luego repetir pasos 4.2 a 4.5) |
@@ -150,7 +150,7 @@ DB_CLOUD_NAME=...
 
 Luego reiniciar el backend:
 ```powershell
-docker compose restart deleite_api_local
+docker compose restart la_ideal_api_local
 ```
 
 El sistema automáticamente empezará a sincronizar con la nube (bajada de catálogos y subida de datos locales).
@@ -166,7 +166,7 @@ El sistema automáticamente empezará a sincronizar con la nube (bajada de catá
 - Revisar firewall de Windows (permitir puerto 3000).
 
 ### El backend no arranca
-- Revisar logs: `docker compose logs -f deleite_api_local`.
+- Revisar logs: `docker compose logs -f la_ideal_api_local`.
 - Verificar que SQL Server esté corriendo: `docker compose ps`.
 - Confirmar que el `.env` tenga la contraseña correcta.
 - Si modificaron la BD y quieren resetear: `docker compose down -v` y repetir los pasos 4.2 a 4.5.
@@ -174,3 +174,4 @@ El sistema automáticamente empezará a sincronizar con la nube (bajada de catá
 ### No se guarda la dirección en el perfil
 - Esto ya está corregido en la versión actual del APK.
 - Si usan una versión anterior, solo pueden editar nombre y teléfono desde el perfil.
+

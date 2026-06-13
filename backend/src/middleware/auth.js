@@ -22,7 +22,7 @@ function verifyToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_jwt_key_deleite_2026');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_jwt_key_la_ideal_2026');
     req.user = decoded; // { id_usuario, usuario, rol_app, id_tienda }
     next();
   } catch (error) {
