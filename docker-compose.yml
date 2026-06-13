@@ -39,6 +39,7 @@ services:
       - "${API_PORT:-3000}:3000"
     volumes:
       - ./backend:/app
+      - /app/node_modules
     depends_on:
       - deleite_sql_local
     command: ["npm", "run", "dev"]
