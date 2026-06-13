@@ -1,0 +1,286 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Gestión de Personal - Bakery Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#e3d8d1",
+                    "tertiary-fixed-dim": "#cbc6b9",
+                    "on-tertiary-container": "#a19c90",
+                    "inverse-primary": "#ecbcaa",
+                    "primary-fixed": "#ffdbce",
+                    "surface-container-low": "#fdf1eb",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#ece0da",
+                    "secondary-container": "#fed65b",
+                    "on-secondary-fixed": "#241a00",
+                    "surface": "#fff8f5",
+                    "surface-container-high": "#f2e6df",
+                    "primary-container": "#4b2c20",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#bf9282",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#1d1c13",
+                    "on-secondary-fixed-variant": "#574500",
+                    "surface-container": "#f7ece5",
+                    "error": "#ba1a1a",
+                    "background": "#fff8f5",
+                    "tertiary-fixed": "#e8e2d4",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#83746f",
+                    "on-tertiary-fixed-variant": "#49473d",
+                    "inverse-on-surface": "#faeee8",
+                    "tertiary-container": "#36342b",
+                    "secondary-fixed-dim": "#e9c349",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#ffe088",
+                    "secondary": "#735c00",
+                    "on-primary-fixed": "#2e140a",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#ece0da",
+                    "on-secondary-container": "#745c00",
+                    "on-surface-variant": "#504440",
+                    "on-primary-fixed-variant": "#613e31",
+                    "surface-bright": "#fff8f5",
+                    "on-surface": "#201b17",
+                    "primary-fixed-dim": "#ecbcaa",
+                    "outline-variant": "#d5c3bd",
+                    "on-error": "#ffffff",
+                    "on-background": "#201b17",
+                    "inverse-surface": "#352f2b",
+                    "primary": "#32170d",
+                    "tertiary": "#211f16",
+                    "surface-tint": "#7b5647"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "margin-mobile": "16px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "margin-desktop": "32px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Manrope"],
+                    "body-lg": ["Work Sans"],
+                    "label-sm": ["JetBrains Mono"],
+                    "label-lg": ["Work Sans"],
+                    "headline-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "headline-sm": ["Manrope"],
+                    "body-md": ["Work Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fff8f5;
+            color: #201b17;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .worker-card-shadow {
+            box-shadow: 0 2px 4px rgba(50, 23, 13, 0.05);
+        }
+        .fab-shadow {
+            box-shadow: 0 4px 12px rgba(115, 92, 0, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d5c3bd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden pb-32">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-container shadow-sm flex items-center justify-between px-margin-mobile py-sm h-16">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-size: 28px;">store</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Gestión de Personal</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Manager Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a friendly bakery manager in their late 30s wearing a clean white linen apron. The lighting is bright and warm, suggesting a high-end artisanal bakery environment. The background is slightly blurred showing warm wooden shelves with freshly baked sourdough bread. The overall aesthetic is clean, professional, and welcoming, matching a modern corporate bakery brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTRiNPFFBzevzR9b6UGYGYy6FshMEuxj_qiONR2HNLJjHjvoNpGfYa8HQi2nioQ59nTn7oGyTbRR4TGuHn4Pd-LkHQ7ptLCjDtGHaI5gV0CrbEnk83i0ZgA2B788PUBiTJ-3KWGOy623RWJtwuDbthQUN9rcgeHwMchuMCr6KQH3YOwYjHgudL1rcothEPDQTSSx0ZAP46fnsOtu6tqsAvcQBYEV6VUfgOtk0jnbiMdCPlBFlt5b69D8TBkUlkmdN6RyteBDFn_Tuu">
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile py-lg space-y-lg">
+<!-- Stats Row: Bento Style -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-sm">
+<div class="bg-surface-container-low p-md rounded-xl border border-[#E5DED0] flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Total</span>
+<span class="font-headline-lg text-headline-lg text-primary">24</span>
+</div>
+<div class="bg-secondary-container p-md rounded-xl border border-[#FED65B] flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant uppercase tracking-wider mb-xs">Activos</span>
+<span class="font-headline-lg text-headline-lg text-on-secondary-fixed">18</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl border border-[#E5DED0] flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Meseros</span>
+<span class="font-headline-lg text-headline-lg text-primary">12</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl border border-[#E5DED0] flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Chefs</span>
+<span class="font-headline-lg text-headline-lg text-primary">6</span>
+</div>
+</section>
+<!-- Search and Filter (Implicit requirement for management) -->
+<div class="flex items-center gap-sm bg-surface-container-highest px-md py-sm rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-on-surface placeholder-on-surface-variant" placeholder="Buscar personal..." type="text">
+</div>
+<!-- Workers List -->
+<section class="space-y-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface px-xs">Personal del Equipo</h2>
+<div class="space-y-sm">
+<!-- Worker Item 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-[#E5DED0] worker-card-shadow flex items-center justify-between group transition-all hover:bg-surface-container-low">
+<div class="flex items-center gap-md">
+<div class="relative">
+<img alt="Marco Rossi" class="w-14 h-14 rounded-full object-cover" data-alt="A close-up portrait of a male chef named Marco Rossi, smiling warmly. He is wearing a professional charcoal grey chef's coat in a modern kitchen setting. The lighting is cinematic and focused, highlighting the clean lines of his uniform. The background shows hints of a high-tech stainless steel kitchen, maintaining a professional and high-quality aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd6bEG3gVh-H9X3s2XiasDAI0_o5u7EP1CXF07-cFkTgV3ypzw3bw8XAkOCZ4QDkWFhljlSAc5kWqaNXCGog3BRwWcR2w3dsre3Fc3cla-tpaMmyUgyj3xnhbRNenlqQjpbT9KQVB2Tah_2NU4954Ny1BpRtAw1ChxyxLCp0Lql9qJZa5f0odOS5cGJGV7iZ9ZQD643MRgHIbH2RH5J9M9U-Fqwb8gCIJyb07fHPqQgqHVOybCeMuEwC7TaZgP9mr53HiQ4DjAbS1h">
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-surface-container-lowest rounded-full"></span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary leading-tight">Marco Rossi</p>
+<div class="flex items-center gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant px-2 py-0.5 bg-surface-container-high rounded uppercase">Chef</span>
+<span class="text-xs text-green-700 font-semibold">• En turno</span>
+</div>
+</div>
+</div>
+<button class="p-sm rounded-full hover:bg-surface-container-highest transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-outline">edit</span>
+</button>
+</div>
+<!-- Worker Item 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-[#E5DED0] worker-card-shadow flex items-center justify-between group transition-all hover:bg-surface-container-low">
+<div class="flex items-center gap-md">
+<div class="relative">
+<img alt="Elena Vargas" class="w-14 h-14 rounded-full object-cover" data-alt="A professional headshot of Elena Vargas, a waitress with a friendly and efficient expression. She is wearing a deep brown linen shirt with a subtle gold brand logo. The background is the interior of a warm, cream-colored bakery with soft bokeh lighting from hanging pendant lamps. The overall mood is reliable, calm, and organized." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrajostF-MmJ1YHdsbsp1ZYYWEnazlY6WxMWpJVUb8efDYMWNcBAAb6CDX5H7jK2vUdUmB24qk7a_sfLuznrOqGt5Srk601PMbWm_-JaZJdjTvrzdVO-xwie_31V16vtFroGT_N92Bx4QbMfNwr2E-3hKiSg2y97nGnYgKyTeHpiTcSpLiixgLbXshytLU2RNfSNX7Kc5OscVf6WW02aWFHNgD1k1uM5L0V9AdPsh9fIL31hEnboesI5WIX2Jc7994nIKU7t07JxHE">
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-on-surface-variant border-2 border-surface-container-lowest rounded-full"></span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary leading-tight">Elena Vargas</p>
+<div class="flex items-center gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant px-2 py-0.5 bg-surface-container-high rounded uppercase">Waiter</span>
+<span class="text-xs text-on-surface-variant font-medium">• Fuera de turno</span>
+</div>
+</div>
+</div>
+<button class="p-sm rounded-full hover:bg-surface-container-highest transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-outline">edit</span>
+</button>
+</div>
+<!-- Worker Item 3 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-[#E5DED0] worker-card-shadow flex items-center justify-between group transition-all hover:bg-surface-container-low">
+<div class="flex items-center gap-md">
+<div class="relative">
+<img alt="David Kim" class="w-14 h-14 rounded-full object-cover" data-alt="A portrait of David Kim, a young energetic waiter, looking towards the camera with a helpful smile. He is in a busy but organized bakery setting, wearing a deep brown apron. The lighting is natural and bright, capturing a morning service atmosphere. The color palette consists of warm creams, browns, and soft yellows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTHBfs4TXe0EoPAqlWEVgyrntURIfbqdKEkAv-S_QC9euFy3xlsZDCwWksM8gKwTw3iWbS1MQ6oEPDEaGsn8E2W89SvmsxLrTwmIv0Us0a3pm8LcC-4bJ6AlK00KFf3UpuWRhPJfGfSHdn7NIGYfBHN9Ub-w1ukkaAeA7slNDE4w0-takDs0I4cqIoMxW8oc7P-uU67cqq-zTjgXg8eNFRw33NOBlkmfKi3GVrQjMCmeZGvF6bf1MN-wMpT2FWxfyRzBgPgssEdUfl">
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-surface-container-lowest rounded-full"></span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary leading-tight">David Kim</p>
+<div class="flex items-center gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant px-2 py-0.5 bg-surface-container-high rounded uppercase">Waiter</span>
+<span class="text-xs text-green-700 font-semibold">• En turno</span>
+</div>
+</div>
+</div>
+<button class="p-sm rounded-full hover:bg-surface-container-highest transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-outline">edit</span>
+</button>
+</div>
+<!-- Worker Item 4 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-[#E5DED0] worker-card-shadow flex items-center justify-between group transition-all hover:bg-surface-container-low">
+<div class="flex items-center gap-md">
+<div class="relative">
+<img alt="Lucía Mendez" class="w-14 h-14 rounded-full object-cover" data-alt="A professional portrait of Lucía Mendez, a senior pastry chef. She has a focused and expert demeanor, wearing a clean white chef's hat and jacket. The setting is a bakery studio with marble countertops and professional baking tools in the background. The lighting is soft and diffused, emphasizing a clean and artisanal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb7dld7WH2BHVs1cqj84p0t0WxMNczDZ3xdEd8fs6mayfjDbTk9nUyROyRmFw_JGOeTH4rHsLbcUnQDrPVw5AUWXyvv3eSeqILZ0CAOb48vS001uWGjtQyxN8-7sxK7tKpx3PVDYQRFgW-e0T4DS1FCrfAy4BSKLBo9nsjc3DXVGRna869fgvQkVIbV9KecnmkALjqP0xKms6NSey0KduS6jRxuhSkEdgtXVJJ25VTq8MqG3O6vEJbj0Td8GuZbs-SFesM4GmVMUUV">
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-surface-container-lowest rounded-full"></span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary leading-tight">Lucía Mendez</p>
+<div class="flex items-center gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant px-2 py-0.5 bg-surface-container-high rounded uppercase">Chef</span>
+<span class="text-xs text-green-700 font-semibold">• En turno</span>
+</div>
+</div>
+</div>
+<button class="p-sm rounded-full hover:bg-surface-container-highest transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-outline">edit</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-secondary-container text-on-secondary-container rounded-2xl flex items-center justify-center fab-shadow active:scale-90 transition-transform duration-100 z-50">
+<span class="material-symbols-outlined" style="font-size: 32px; font-variation-settings: 'wght' 600;">add</span>
+</button>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-inverse-surface shadow-[0_-4px_12px_rgba(50,23,13,0.12)] rounded-t-xl flex justify-around items-center px-4 pb-4 pt-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-2 hover:bg-surface-container-highest transition-colors active:scale-90 duration-100" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg mt-1">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-on-secondary-fixed-variant text-on-secondary-container dark:text-secondary-fixed rounded-xl px-4 py-2 active:scale-90 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">badge</span>
+<span class="font-label-lg text-label-lg mt-1">Workers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-2 hover:bg-surface-container-highest transition-colors active:scale-90 duration-100" href="#">
+<span class="material-symbols-outlined">table_restaurant</span>
+<span class="font-label-lg text-label-lg mt-1">Tables</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-2 hover:bg-surface-container-highest transition-colors active:scale-90 duration-100" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-lg text-label-lg mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for list items
+        document.querySelectorAll('.worker-card-shadow').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.classList.add('scale-[0.98]');
+            });
+            card.addEventListener('mouseup', () => {
+                card.classList.remove('scale-[0.98]');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('scale-[0.98]');
+            });
+        });
+
+        // FAB active state handled via CSS/Tailwind active:scale-90
+    </script>
+</body></html>

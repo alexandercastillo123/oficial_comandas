@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nuevo Trabajador - Bakery Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#745c00",
+                        "secondary": "#735c00",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#ffdbce",
+                        "primary": "#32170d",
+                        "surface": "#fff8f5",
+                        "on-tertiary-fixed": "#1d1c13",
+                        "primary-fixed-dim": "#ecbcaa",
+                        "tertiary-container": "#36342b",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fed65b",
+                        "on-secondary-fixed-variant": "#574500",
+                        "secondary-fixed": "#ffe088",
+                        "on-primary-fixed-variant": "#613e31",
+                        "on-primary-fixed": "#2e140a",
+                        "background": "#fff8f5",
+                        "surface-bright": "#fff8f5",
+                        "on-secondary-fixed": "#241a00",
+                        "inverse-surface": "#352f2b",
+                        "surface-tint": "#7b5647",
+                        "primary-container": "#4b2c20",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e8e2d4",
+                        "outline": "#83746f",
+                        "surface-container-low": "#fdf1eb",
+                        "tertiary-fixed-dim": "#cbc6b9",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#f7ece5",
+                        "tertiary": "#211f16",
+                        "surface-container-high": "#f2e6df",
+                        "on-primary-container": "#bf9282",
+                        "outline-variant": "#d5c3bd",
+                        "on-tertiary-container": "#a19c90",
+                        "on-surface-variant": "#504440",
+                        "on-surface": "#201b17",
+                        "on-background": "#201b17"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "margin-desktop": "32px",
+                        "sm": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"],
+                        "headline-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "label-lg": ["Work Sans"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-sm": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fff8f5;
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 20px -2px rgba(50, 23, 13, 0.08);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #32170d !important;
+            box-shadow: 0 0 0 2px rgba(50, 23, 13, 0.1);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface shadow-sm flex items-center justify-between px-margin-mobile py-sm">
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95" onclick="history.back()">arrow_back</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Nuevo Trabajador</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">store</span>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
+<img alt="Manager Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh-BbbF7tqXs9mzHKLK3n2H8HllGKJvmN5QMwZt0HDkKtrxrMUJiZ52wLDjxuklF3E4zDna6aEJbUu6iZEtvmUPxypcHDpBSEyvVjRDu-VPTueQLxRz_jkdPjfwN3bMbpaLoDM3_py5VYVlvOTTMI5hZI2JXL3AZK1KZcKlmN6_6lUodKbnthQqnvVUc0FdtUlDq5RXNJx88IeW9cHHLbFz78SSep5kBAZ5F901biLQOHrXhUBNjBo0vIC5QS1jVeyLaZRebMBaqr4">
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-margin-mobile pt-lg">
+<!-- Form Container -->
+<div class="bg-surface-container-lowest rounded-xl p-lg custom-shadow border border-[#E5DED0]">
+<form class="space-y-lg" id="workerForm">
+<!-- Profile Photo Section -->
+<div class="flex flex-col items-center gap-md mb-xl">
+<div class="relative group">
+<div class="w-28 h-28 rounded-full bg-surface-container-high border-2 border-dashed border-outline-variant flex items-center justify-center overflow-hidden transition-all group-hover:border-primary" id="photo-preview">
+<span class="material-symbols-outlined text-outline text-4xl" id="photo-icon">add_a_photo</span>
+<img class="hidden w-full h-full object-cover" id="preview-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgcng9IjgiIGZpbGw9IiNlOGVhZWQiLz48cGF0aCBkPSJNMTcwIDEzMCBsMzAgNDAgbDIwLTE1IGw0MCA1NSBIMTQweiIgZmlsbD0iI2JkYzFjNiIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjEyMCIgcj0iMTgiIGZpbGw9IiNiZGMxYzYiLz48L3N2Zz4=">
+</div>
+<input accept="image/*" class="hidden" id="photo-input" type="file">
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary p-2 rounded-full shadow-lg active:scale-90 transition-transform" onclick="document.getElementById('photo-input').click()" type="button">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<div class="text-center">
+<p class="font-label-lg text-label-lg text-primary">Foto de Perfil</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">(Opcional)</p>
+</div>
+</div>
+<!-- Full Name Field -->
+<div class="space-y-xs">
+<label class="font-label-lg text-label-lg text-on-surface-variant block ml-1" for="fullName">Nombre Completo</label>
+<input class="w-full px-md py-3 rounded-lg border border-outline-variant bg-surface-container-lowest font-body-md text-on-surface transition-all" id="fullName" name="fullName" placeholder="ej. Julián Serrano" required="" type="text">
+</div><div class="space-y-xs">
+<label class="font-label-lg text-label-lg text-on-surface-variant block ml-1" for="lastName">Apellidos</label>
+<input class="w-full px-md py-3 rounded-lg border border-outline-variant bg-surface-container-lowest font-body-md text-on-surface transition-all" id="lastName" name="lastName" placeholder="ej. Pérez" required="" type="text">
+</div><div class="space-y-xs">
+<label class="font-label-lg text-label-lg text-on-surface-variant block ml-1" for="dni">DNI</label>
+<input class="w-full px-md py-3 rounded-lg border border-outline-variant bg-surface-container-lowest font-body-md text-on-surface transition-all" id="dni" name="dni" placeholder="12345678A" required="" type="text">
+</div>
+<!-- Role Selection -->
+<div class="space-y-xs">
+<label class="font-label-lg text-label-lg text-on-surface-variant block ml-1">Rol</label>
+<div class="grid grid-cols-2 gap-md">
+<label class="relative flex items-center justify-center p-md border border-outline-variant rounded-lg cursor-pointer transition-all hover:bg-surface-container-low has-[:checked]:border-primary has-[:checked]:bg-primary-container has-[:checked]:bg-opacity-10">
+<input checked="" class="sr-only" name="role" type="radio" value="waiter">
+<div class="flex flex-col items-center gap-xs">
+<span class="material-symbols-outlined text-primary">person</span>
+<span class="font-label-lg text-label-lg text-primary">Mesero</span>
+</div>
+</label>
+<label class="relative flex items-center justify-center p-md border border-outline-variant rounded-lg cursor-pointer transition-all hover:bg-surface-container-low has-[:checked]:border-primary has-[:checked]:bg-primary-container has-[:checked]:bg-opacity-10">
+<input class="sr-only" name="role" type="radio" value="chef">
+<div class="flex flex-col items-center gap-xs">
+<span class="material-symbols-outlined text-primary">skillet</span>
+<span class="font-label-lg text-label-lg text-primary">Chef</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Work Shift Selection -->
+
+<!-- Decorative Asset -->
+<div class="pt-lg opacity-40">
+<div class="h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent"></div>
+<div class="flex justify-center mt-lg">
+<div class="w-24 h-24 overflow-hidden rounded-full border border-outline-variant">
+<img class="w-full h-full object-cover grayscale opacity-50" data-alt="A close up detailed shot of freshly baked artisanal sourdough bread with a crispy golden crust, dusted with flour, resting on a rustic wooden table in a warm bakery setting. The lighting is soft and golden, highlighting the texture and artisanal quality of the bakery's craft." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1Ic7kLfJFZN5DwURvO6h3ZJh5dZufOtkaOyufHpjdUiJ9Lvgllyax5e7_b_yKSKZK4-Dfx66nfulxmnvapBMrUrHfJMnlRHHQrgyxmdMCZ0hzgdz25KRu0iPsQq2vVrNAJVXbP4qI0R42tV6RhvJN86NJr8aiC085FJdGN0HarJ6RDbwq4GKtCYoNaq23X8EGKoWd1Pw7OQri6oblx1-Yg74XHlbOysZdjWSy0y9pAGXUTAqJrfB7KAUkj33CTebGQAjErG28_UmD">
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<button type="submit" class="w-full mb-md px-lg py-4 rounded-xl bg-primary font-label-lg text-label-lg text-on-primary shadow-lg hover:brightness-110 transition-all active:scale-[0.98] flex items-center justify-center gap-sm uppercase tracking-wider">
+    <span class="material-symbols-outlined text-sm">person_add</span>
+    AGREGAR TRABAJADOR
+</button><div class="flex flex-col sm:flex-row gap-md pt-lg">
+<button class="flex-1 px-lg py-3 rounded-lg border border-outline font-label-lg text-label-lg text-primary hover:bg-surface-container-high transition-colors active:scale-95" onclick="history.back()" type="button">
+                        Cancelar
+                    </button>
+<button class="flex-1 px-lg py-3 rounded-lg bg-primary font-label-lg text-label-lg text-on-primary shadow-lg hover:brightness-110 transition-all active:scale-95 flex items-center justify-center gap-sm" type="submit">
+<span class="material-symbols-outlined text-sm">save</span>
+                        Guardar Trabajador
+                    </button>
+</div>
+</form>
+</div>
+</main>
+<!-- BottomNavBar (Hidden on desktop, shown on mobile as part of Shell) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-surface shadow-[0_-4px_12px_rgba(50,23,13,0.12)] rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-container-highest transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-label-lg text-label-lg">Workers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-container-highest transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined">table_restaurant</span>
+<span class="font-label-lg text-label-lg">Tables</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-container-highest transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-lg text-label-lg">Profile</span>
+</a>
+</nav>
+<script>
+        // Photo upload preview logic
+        const photoInput = document.getElementById('photo-input');
+        const photoPreview = document.getElementById('preview-img');
+        const photoIcon = document.getElementById('photo-icon');
+
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    photoPreview.src = event.target.result;
+                    photoPreview.classList.remove('hidden');
+                    photoIcon.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission animation
+        const form = document.getElementById('workerForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Guardando...';
+            
+            setTimeout(() => {
+                alert('¡Trabajador guardado con éxito!');
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+                form.reset();
+                photoPreview.classList.add('hidden');
+                photoIcon.classList.remove('hidden');
+            }, 1500);
+        });
+
+        // Micro-interactions for shift select
+        const select = document.getElementById('shift');
+        select.addEventListener('change', () => {
+            select.parentElement.classList.add('scale-[1.02]');
+            setTimeout(() => select.parentElement.classList.remove('scale-[1.02]'), 200);
+        });
+    </script>
+
+
+</body></html>

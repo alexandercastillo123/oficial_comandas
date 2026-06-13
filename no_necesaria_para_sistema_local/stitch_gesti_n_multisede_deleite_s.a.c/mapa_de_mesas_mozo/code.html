@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .table-shadow {
+            box-shadow: 0 2px 8px -2px rgba(50, 23, 13, 0.08);
+        }
+        .status-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .6; }
+        }
+        body {
+            overscroll-behavior-y: contain;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#f2e6df",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#d5c3bd",
+                      "on-primary-container": "#bf9282",
+                      "on-background": "#201b17",
+                      "surface-dim": "#e3d8d1",
+                      "secondary-fixed": "#ffe088",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#fed65b",
+                      "surface-bright": "#fff8f5",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#352f2b",
+                      "tertiary": "#211f16",
+                      "surface": "#fff8f5",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#574500",
+                      "surface-container-low": "#fdf1eb",
+                      "surface-variant": "#ece0da",
+                      "on-secondary-container": "#745c00",
+                      "surface-container-highest": "#ece0da",
+                      "on-surface": "#201b17",
+                      "on-primary-fixed-variant": "#613e31",
+                      "primary-fixed-dim": "#ecbcaa",
+                      "error-container": "#ffdad6",
+                      "primary": "#32170d",
+                      "primary-container": "#4b2c20",
+                      "on-tertiary-fixed": "#1d1c13",
+                      "on-tertiary-fixed-variant": "#49473d",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#f7ece5",
+                      "secondary-fixed-dim": "#e9c349",
+                      "tertiary-fixed-dim": "#cbc6b9",
+                      "tertiary-fixed": "#e8e2d4",
+                      "tertiary-container": "#36342b",
+                      "surface-tint": "#7b5647",
+                      "outline": "#83746f",
+                      "on-surface-variant": "#504440",
+                      "on-tertiary-container": "#a19c90",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed": "#2e140a",
+                      "on-secondary-fixed": "#241a00",
+                      "inverse-primary": "#ecbcaa",
+                      "secondary": "#735c00",
+                      "background": "#fff8f5",
+                      "inverse-on-surface": "#faeee8",
+                      "primary-fixed": "#ffdbce"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "sm": "8px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "base": "4px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "32px",
+                      "xl": "32px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "label-sm": ["JetBrains Mono"],
+                      "body-lg": ["Work Sans"],
+                      "headline-sm": ["Manrope"],
+                      "headline-md": ["Manrope"],
+                      "headline-lg": ["Manrope"],
+                      "label-lg": ["Work Sans"],
+                      "headline-lg-mobile": ["Manrope"],
+                      "body-md": ["Work Sans"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- Top Navigation Anchor -->
+<header class="bg-surface dark:bg-surface-dim shadow-sm flex items-center justify-between px-margin-mobile h-14 w-full sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="restaurant">restaurant</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Mozos Management</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-primary mr-1">La Ideal</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="notifications">notifications</span>
+</div>
+</div>
+</header>
+<main class="px-margin-mobile pt-lg">
+<!-- Status Summary Bar -->
+<section class="flex gap-2 overflow-x-auto pb-4 no-scrollbar mb-4">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant whitespace-nowrap">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span class="font-label-lg text-label-lg text-on-surface">Libre (12)</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant whitespace-nowrap">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+<span class="font-label-lg text-label-lg text-on-surface">Ocupada (8)</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant whitespace-nowrap">
+<span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+<span class="font-label-lg text-label-lg text-on-surface">Pre-cuenta (3)</span>
+</div>
+</section>
+<!-- Search and Filter Row -->
+<div class="flex items-center gap-3 mb-6">
+<div class="flex-grow relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container border border-outline-variant rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md" placeholder="Buscar mesa..." type="text">
+</div>
+<button class="bg-surface-container-highest p-3 rounded-xl border border-outline-variant active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+<!-- Bento Grid Table Layout -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+<!-- Table Card: Ocupada -->
+<div class="bg-surface-container-lowest border-l-4 border-l-secondary-container rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl" data-icon="table_restaurant">table_restaurant</span>
+</div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 01</span>
+<span class="status-dot w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">4 Personas</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-secondary-container">Ocupada</span>
+<span class="font-label-sm text-label-sm font-bold">12:45</span>
+</div>
+</div>
+<!-- Table Card: Libre -->
+<div class="bg-surface-container-lowest border-l-4 border-l-emerald-500 rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-5">
+<span class="material-symbols-outlined text-4xl" data-icon="event_seat">event_seat</span>
+</div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 02</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">2 Personas</span>
+</div>
+<div class="bg-emerald-50 rounded-lg p-2 flex items-center justify-center">
+<span class="font-label-sm text-label-sm text-emerald-700 font-semibold">Disponible</span>
+</div>
+</div>
+<!-- Table Card: Pre-cuenta -->
+<div class="bg-surface-container-lowest border-l-4 border-l-blue-400 rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-4xl" data-icon="receipt_long">receipt_long</span>
+</div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 03</span>
+<span class="status-dot w-2 h-2 rounded-full bg-blue-400"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">6 Personas</span>
+</div>
+<div class="bg-blue-50 rounded-lg p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-blue-700 font-semibold">Cerrando</span>
+<span class="material-symbols-outlined text-blue-700 text-sm" data-icon="print">print</span>
+</div>
+</div>
+<!-- Table Card: Ocupada -->
+<div class="bg-surface-container-lowest border-l-4 border-l-secondary-container rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 04</span>
+<span class="status-dot w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">2 Personas</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-secondary-container">Ocupada</span>
+<span class="font-label-sm text-label-sm font-bold">13:10</span>
+</div>
+</div>
+<!-- Table Card: Libre Large -->
+<div class="bg-surface-container-lowest border-l-4 border-l-emerald-500 rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 05</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">8 Personas</span>
+</div>
+<div class="bg-emerald-50 rounded-lg p-2 flex items-center justify-center">
+<span class="font-label-sm text-label-sm text-emerald-700 font-semibold">Disponible</span>
+</div>
+</div>
+<!-- Table Card: Ocupada -->
+<div class="bg-surface-container-lowest border-l-4 border-l-secondary-container rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 06</span>
+<span class="status-dot w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">4 Personas</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-secondary-container">Ocupada</span>
+<span class="font-label-sm text-label-sm font-bold">13:22</span>
+</div>
+</div>
+<!-- Table Card: Libre -->
+<div class="bg-surface-container-lowest border-l-4 border-l-emerald-500 rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 07</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">2 Personas</span>
+</div>
+<div class="bg-emerald-50 rounded-lg p-2 flex items-center justify-center">
+<span class="font-label-sm text-label-sm text-emerald-700 font-semibold">Disponible</span>
+</div>
+</div>
+<!-- Table Card: Pre-cuenta -->
+<div class="bg-surface-container-lowest border-l-4 border-l-blue-400 rounded-xl p-4 table-shadow active:scale-95 transition-all cursor-pointer relative overflow-hidden group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-sm text-headline-sm text-primary">Mesa 08</span>
+<span class="status-dot w-2 h-2 rounded-full bg-blue-400"></span>
+</div>
+<div class="flex items-center gap-1 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">4 Personas</span>
+</div>
+<div class="bg-blue-50 rounded-lg p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-blue-700 font-semibold">Cerrando</span>
+<span class="material-symbols-outlined text-blue-700 text-sm" data-icon="print">print</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB Action for New Order -->
+<button class="fixed bottom-24 right-6 bg-secondary-container text-on-secondary-container w-14 h-14 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-all z-40 border-2 border-white">
+<span class="material-symbols-outlined text-3xl" data-icon="add" style="font-variation-settings: 'wght' 600;">add</span>
+</button>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant shadow-[0_-4px_12px_rgba(50,23,13,0.12)] z-50">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined active-icon" data-icon="grid_view" data-weight="fill" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-sm text-label-sm">Mesas</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 transition-all duration-200 p-2 rounded-xl">
+<span class="material-symbols-outlined" data-icon="chef_hat">chef_hat</span>
+<span class="font-label-sm text-label-sm">Cocina</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 transition-all duration-200 p-2 rounded-xl">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Perfil</span>
+</div>
+</nav>
+<script>
+        // Simple micro-interaction for table cards
+        document.querySelectorAll('.table-shadow').forEach(card => {
+            card.addEventListener('click', () => {
+                const tableName = card.querySelector('span').innerText;
+                console.log(`Navigating to ${tableName} details...`);
+                // Placeholder for navigation logic
+            });
+        });
+
+        // Search highlight effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.table-shadow').forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                } else {
+                    card.style.opacity = '0.4';
+                    card.style.transform = 'scale(0.95)';
+                }
+            });
+        });
+    </script>
+</body></html>

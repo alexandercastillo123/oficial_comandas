@@ -1,0 +1,254 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Work+Sans:wght@400;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Manrope:wght@100..900&amp;family=Work+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#f2e6df",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#d5c3bd",
+                    "on-primary-container": "#bf9282",
+                    "on-background": "#201b17",
+                    "surface-dim": "#e3d8d1",
+                    "secondary-fixed": "#ffe088",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#fed65b",
+                    "surface-bright": "#fff8f5",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#352f2b",
+                    "tertiary": "#211f16",
+                    "surface": "#fff8f5",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#574500",
+                    "surface-container-low": "#fdf1eb",
+                    "surface-variant": "#ece0da",
+                    "on-secondary-container": "#745c00",
+                    "surface-container-highest": "#ece0da",
+                    "on-surface": "#201b17",
+                    "on-primary-fixed-variant": "#613e31",
+                    "primary-fixed-dim": "#ecbcaa",
+                    "error-container": "#ffdad6",
+                    "primary": "#32170d",
+                    "primary-container": "#4b2c20",
+                    "on-tertiary-fixed": "#1d1c13",
+                    "on-tertiary-fixed-variant": "#49473d",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#f7ece5",
+                    "secondary-fixed-dim": "#e9c349",
+                    "tertiary-fixed": "#e8e2d4",
+                    "tertiary-container": "#36342b",
+                    "surface-tint": "#7b5647",
+                    "outline": "#83746f",
+                    "on-surface-variant": "#504440",
+                    "on-tertiary-container": "#a19c90",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#2e140a",
+                    "on-secondary-fixed": "#241a00",
+                    "inverse-primary": "#ecbcaa",
+                    "secondary": "#735c00",
+                    "background": "#fff8f5",
+                    "inverse-on-surface": "#faeee8",
+                    "primary-fixed": "#ffdbce"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "sm": "8px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "base": "4px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "xl": "32px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "body-lg": ["Work Sans"],
+                    "headline-sm": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "label-lg": ["Work Sans"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-md": ["Work Sans"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fff8f5;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bento-card {
+            background-color: #ffffff;
+            border: 1px solid #E5DED0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bento-card:active {
+            transform: scale(0.98);
+        }
+        .sticky-summary {
+            box-shadow: 0 -4px 12px rgba(50, 23, 13, 0.12);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top AppBar -->
+<header class="bg-surface dark:bg-surface-dim shadow-sm flex items-center justify-between px-margin-mobile h-14 w-full top-0 sticky z-40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" style="font-size: 24px;">restaurant</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Mozos Management</h1>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 rounded-full hover:bg-surface-variant/50 transition-transform active:scale-95">notifications</button>
+</header>
+<main class="px-margin-mobile pt-lg pb-32 max-w-2xl mx-auto">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center mb-lg">
+<div class="relative mb-4 group">
+<div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of David Kim, a friendly waiter in a high-end bakery environment. He wears a clean brown apron over a white shirt. The lighting is warm and natural, suggesting an early morning cafe atmosphere. The background is softly blurred showing artisanal bread racks and copper espresso machines, maintaining a modern corporate yet tactile visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8iYcW5DbEn1uonFLJNJCaP7518Pc8EKRUmLtNs_TATOiiC7E8IYqk5-7AC_rj_mqQCFg9OY3XjDJCYC4uUKWYhf_gU33LdnXjOhpc7lvPfYToGhAWa9LigFrq83Px4Ugbradp3CIfI-xUFBJ5FTiX4144KToNK6lsfX0HbcNi7wlaVoXEUcbrWyYryXuo54K-Axlwm3PVSlVzX2YdULZt7APp6JMGJkbAto8QTO789Hq4vCLtliRSRbKlhCSQl1-5V7APZxwUOMxR">
+</div>
+<button class="absolute bottom-0 right-0 bg-secondary-container text-on-secondary-container p-2 rounded-full shadow-md hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+</button>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary">David Kim</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="bg-primary-container text-on-primary-container px-3 py-0.5 rounded-full font-label-sm text-label-sm">Mozo</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">#EMP-2024-089</span>
+</div>
+</section>
+<!-- Stats Bento Grid -->
+<div class="grid grid-cols-2 gap-md mb-lg">
+<div class="bento-card p-4 rounded-xl flex flex-col justify-between h-32">
+<span class="text-on-surface-variant font-label-lg text-label-lg uppercase tracking-wider">Tickets Hoy</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary font-bold">42</span>
+<span class="text-secondary font-label-sm text-label-sm">+12%</span>
+</div>
+</div>
+<div class="bento-card p-4 rounded-xl flex flex-col justify-between h-32">
+<span class="text-on-surface-variant font-label-lg text-label-lg uppercase tracking-wider">Eficiencia</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary font-bold">98</span>
+<span class="text-primary font-label-sm text-label-sm">%</span>
+</div>
+</div>
+</div>
+<!-- Personal Data Section -->
+<section class="mb-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-md">Datos Personales</h3>
+<div class="bento-card rounded-xl overflow-hidden divide-y divide-outline-variant/30">
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">mail</span>
+<div>
+<p class="text-on-surface-variant text-[12px] font-semibold uppercase">Email</p>
+<p class="text-on-surface font-body-md">david.kim@bakeryman.com</p>
+</div>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">calendar_today</span>
+<div>
+<p class="text-on-surface-variant text-[12px] font-semibold uppercase">Fecha de Ingreso</p>
+<p class="text-on-surface font-body-md">15 Enero, 2024</p>
+</div>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">badge</span>
+<div>
+<p class="text-on-surface-variant text-[12px] font-semibold uppercase">Rol de Acceso</p>
+<p class="text-on-surface font-body-md">Personal de Salón</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Actions Section -->
+<section class="mb-lg space-y-md">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-md">Seguridad y Preferencias</h3>
+<button class="w-full bento-card p-4 rounded-xl flex items-center justify-between group hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">lock</span>
+<span class="font-body-md font-semibold text-primary">Cambiar Contraseña</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full bento-card p-4 rounded-xl flex items-center justify-between group hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="font-body-md font-semibold text-primary">Estadísticas Detalladas</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full bg-surface-container-highest/50 p-4 rounded-xl flex items-center justify-between text-error hover:bg-error-container/20 transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md font-semibold">Cerrar Sesión</span>
+</div>
+</button>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant shadow-[0_-4px_12px_rgba(50,23,13,0.12)] z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 active:scale-90 p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-sm text-label-sm">Mesas</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 active:scale-90 p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">chef_hat</span>
+<span class="font-label-sm text-label-sm">Cocina</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">Perfil</span>
+</a>
+</nav>
+<!-- Floating Action Button for ProfileContext -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-secondary-fixed text-on-secondary-fixed rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" style="font-size: 32px;">support_agent</span>
+</button>
+<script>
+        // Micro-interaction for feedback
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.classList.add('shadow-inner');
+            });
+            card.addEventListener('mouseup', () => {
+                card.classList.remove('shadow-inner');
+            });
+        });
+    </script>
+</body></html>

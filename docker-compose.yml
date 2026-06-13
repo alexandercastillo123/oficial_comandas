@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  deleite_sql_local:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: deleite_sql_local
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - SA_PASSWORD=${DB_LOCAL_PASS}
+    ports:
+      - "${DB_LOCAL_PORT:-1433}:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  deleite_api_local:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: deleite_api_local
+    environment:
+      - DB_LOCAL_HOST=deleite_sql_local
+      - DB_LOCAL_PORT=1433
+      - DB_LOCAL_USER=${DB_LOCAL_USER}
+      - DB_LOCAL_PASS=${DB_LOCAL_PASS}      # <-- CORREGIDO: Coincide exactamente con tu db.js
+      - DB_LOCAL_NAME=${DB_LOCAL_NAME}
+      - DB_CLOUD_HOST=${DB_CLOUD_HOST}
+      - DB_CLOUD_PORT=${DB_CLOUD_PORT}
+      - DB_CLOUD_USER=${DB_CLOUD_USER}
+      - DB_CLOUD_PASSWORD=${DB_CLOUD_PASSWORD} # <-- CORREGIDO: Usa su propia clave de la nube
+      - DB_CLOUD_NAME=${DB_CLOUD_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - ID_TIENDA=${ID_TIENDA:-1}
+      - SYNC_DOWN_INTERVAL_MS=${SYNC_DOWN_INTERVAL_MS:-1800000}
+      - SYNC_UP_INTERVAL_MS=${SYNC_UP_INTERVAL_MS:-300000}
+      - SYNC_USERS_INTERVAL_MS=${SYNC_USERS_INTERVAL_MS:-900000}
+      - MAX_SYNC_RETRIES=${MAX_SYNC_RETRIES:-5}
+    ports:
+      - "${API_PORT:-3000}:3000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - deleite_sql_local
+    command: ["npm", "run", "dev"]
+
+volumes:
+  sql_data:

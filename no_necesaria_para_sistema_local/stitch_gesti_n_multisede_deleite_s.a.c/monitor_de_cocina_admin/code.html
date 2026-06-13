@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monitor de Cocina - Artisan Bakery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#a19c90",
+                      "secondary-fixed": "#ffe088",
+                      "inverse-on-surface": "#faeee8",
+                      "secondary-container": "#fed65b",
+                      "on-primary-container": "#bf9282",
+                      "tertiary": "#211f16",
+                      "surface-variant": "#ece0da",
+                      "secondary": "#735c00",
+                      "primary": "#32170d",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#4b2c20",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#201b17",
+                      "inverse-surface": "#352f2b",
+                      "primary-fixed": "#ffdbce",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#d5c3bd",
+                      "surface-container-highest": "#ece0da",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed-dim": "#cbc6b9",
+                      "outline": "#83746f",
+                      "on-secondary-container": "#745c00",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed-variant": "#574500",
+                      "inverse-primary": "#ecbcaa",
+                      "on-tertiary-fixed": "#1d1c13",
+                      "on-surface": "#201b17",
+                      "on-secondary-fixed": "#241a00",
+                      "background": "#fff8f5",
+                      "surface-container-high": "#f2e6df",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#f7ece5",
+                      "surface-dim": "#e3d8d1",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#e8e2d4",
+                      "secondary-fixed-dim": "#e9c349",
+                      "surface-container-low": "#fdf1eb",
+                      "on-surface-variant": "#504440",
+                      "on-tertiary-fixed-variant": "#49473d",
+                      "surface-bright": "#fff8f5",
+                      "on-primary-fixed": "#2e140a",
+                      "surface-tint": "#7b5647",
+                      "on-primary-fixed-variant": "#613e31",
+                      "surface": "#fff8f5",
+                      "primary-fixed-dim": "#ecbcaa",
+                      "tertiary-container": "#36342b",
+                      "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "32px",
+                      "md": "16px",
+                      "base": "4px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Manrope"],
+                      "headline-md": ["Manrope"],
+                      "body-lg": ["Work Sans"],
+                      "label-lg": ["Work Sans"],
+                      "headline-sm": ["Manrope"],
+                      "body-md": ["Work Sans"],
+                      "label-sm": ["JetBrains Mono"],
+                      "headline-lg": ["Manrope"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                      "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .order-card-urgent {
+            border-left: 6px solid #ba1a1a;
+        }
+        .order-card-normal {
+            border-left: 6px solid #735c00;
+        }
+        .order-card-fresh {
+            border-left: 6px solid #bf9282;
+        }
+        body {
+            background-color: #fff8f5;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface dark:bg-surface shadow-sm z-50 flex justify-between items-center px-margin-mobile py-sm md:px-margin-desktop">
+<div class="flex items-center gap-md"><button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150 text-primary dark:text-primary-fixed-dim" data-icon="arrow_back">arrow_back</button>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="storefront">storefront</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Monitor Cocina Admin</h1>
+</div>
+<div class="flex items-center gap-md"><button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150 text-primary dark:text-primary-fixed-dim" data-icon="arrow_back">arrow_back</button>
+<div class="hidden md:flex flex-col items-end mr-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Estado del Horno</span>
+<span class="font-label-lg text-label-lg text-secondary">220°C - ÓPTIMO</span>
+</div>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150" data-icon="settings">settings</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow p-4 md:p-lg lg:p-xl overflow-y-auto">
+<!-- Dashboard Stats (Subtle) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter mb-lg">
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Cola de Espera</span>
+<span class="font-headline-lg text-headline-lg text-primary">12</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tiempo Promedio</span>
+<span class="font-headline-lg text-headline-lg text-secondary">8 min</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Entregados Hoy</span>
+<span class="font-headline-lg text-headline-lg text-on-primary-container">142</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Capacidad Cocina</span>
+<span class="font-headline-lg text-headline-lg text-tertiary">85%</span>
+</div>
+</div>
+<!-- Orders Queue -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Order Card 1 (Urgent/Oldest) -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 flex flex-col order-card-urgent animate-pulse-subtle bg-error-container/20">
+<div class="p-md border-b border-outline-variant/20 flex justify-between items-center bg-error-container/10">
+<div>
+<span class="font-label-sm text-label-sm text-error font-bold uppercase tracking-tighter">Mesa 04</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Ticket #842</h3>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-error font-bold">CRÍTICO</span>
+<div class="flex items-center text-error">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="schedule">schedule</span>
+<span class="font-label-sm text-label-sm">Hace 18 min</span>
+</div>
+</div>
+</div>
+<div class="p-md flex-grow space-y-md">
+<ul class="space-y-sm">
+<li class="flex justify-between items-start border-b border-dashed border-outline-variant/40 pb-sm">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">3</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Croissants de Mantequilla</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">HORNO A</span>
+</li>
+<li class="flex justify-between items-start border-b border-dashed border-outline-variant/40 pb-sm">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">2</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Pain au Chocolat</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">HORNO A</span>
+</li>
+<li class="flex justify-between items-start">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">1</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Café Latte XL</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">BARRA</span>
+</li>
+</ul>
+</div>
+<div class="p-md mt-auto italic text-label-sm text-on-surface-variant bg-surface-container-low/50 rounded-b-xl border-t border-outline-variant/20">
+                    "Sin azúcar en el café, por favor"
+                </div>
+</div>
+<!-- Order Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 flex flex-col order-card-normal">
+<div class="p-md border-b border-outline-variant/20 flex justify-between items-center">
+<div>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-tighter">Mesa 12</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Ticket #845</h3>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="schedule">schedule</span>
+<span class="font-label-sm text-label-sm">Hace 12 min</span>
+</div>
+</div>
+</div>
+<div class="p-md flex-grow space-y-md">
+<ul class="space-y-sm">
+<li class="flex justify-between items-start border-b border-dashed border-outline-variant/40 pb-sm">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">1</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Tostada con Aguacate</span>
+</div>
+</li>
+<li class="flex justify-between items-start border-b border-dashed border-outline-variant/40 pb-sm">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">1</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Huevos Benedictinos</span>
+</div>
+</li>
+<li class="flex justify-between items-start">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">2</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Zumo Naranja Natural</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Order Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 flex flex-col order-card-normal">
+<div class="p-md border-b border-outline-variant/20 flex justify-between items-center">
+<div>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-tighter">Para Llevar</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Ticket #848</h3>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="schedule">schedule</span>
+<span class="font-label-sm text-label-sm">Hace 7 min</span>
+</div>
+</div>
+</div>
+<div class="p-md flex-grow space-y-md">
+<ul class="space-y-sm">
+<li class="flex justify-between items-start border-b border-dashed border-outline-variant/40 pb-sm">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">6</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Mini Baguettes</span>
+</div>
+</li>
+<li class="flex justify-between items-start">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">1</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Quiche de Espinacas</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Order Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 flex flex-col order-card-fresh">
+<div class="p-md border-b border-outline-variant/20 flex justify-between items-center bg-surface-container">
+<div>
+<span class="font-label-sm text-label-sm text-on-primary-container font-bold uppercase tracking-tighter">Mesa 08</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Ticket #850</h3>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-primary-container font-bold">NUEVO</span>
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="schedule">schedule</span>
+<span class="font-label-sm text-label-sm">Hace 2 min</span>
+</div>
+</div>
+</div>
+<div class="p-md flex-grow space-y-md">
+<ul class="space-y-sm">
+<li class="flex justify-between items-start border-b border-dashed border-outline-variant/40 pb-sm">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">2</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Café Solo</span>
+</div>
+</li>
+<li class="flex justify-between items-start">
+<div class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 rounded-full h-fit py-0.5">2</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Scones con Arándanos</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Order Card 5 (Wait) -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 flex flex-col opacity-90 grayscale-[0.2] border-dashed">
+<div class="p-md border-b border-outline-variant/20 flex justify-between items-center">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold uppercase tracking-tighter">Reserva 14:00</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Ticket #851</h3>
+</div>
+<div class="flex flex-col items-end text-on-surface-variant">
+<span class="font-label-sm text-label-sm">PROGRAMADO</span>
+<span class="font-label-sm text-label-sm">En 45 min</span>
+</div>
+</div>
+<div class="p-md flex-grow opacity-60">
+<ul class="space-y-sm">
+<li class="flex gap-sm">
+<span class="font-label-sm text-label-sm bg-outline-variant text-on-surface px-2 rounded-full h-fit py-0.5">1</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Tarta de Manzana (Grande)</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- More placeholders to show the scrollability/grid -->
+<div class="hidden lg:flex items-center justify-center border-2 border-dashed border-outline-variant/30 rounded-xl bg-surface-container-low/20">
+<div class="text-center p-lg">
+<span class="material-symbols-outlined text-4xl text-outline-variant" data-icon="add_circle">add_circle</span>
+<p class="font-label-lg text-label-lg text-outline-variant mt-2 uppercase">Próximo Pedido...</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Sticky Footer for Operational Info (Stationary Tablet) -->
+<footer class="w-full bg-primary text-on-primary px-margin-mobile py-2 flex justify-between items-center font-label-sm text-label-sm">
+<div class="flex gap-lg">
+<span>TERMINAL: COCINA-MAIN-01</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span> SISTEMA CONECTADO</span>
+</div>
+<div class="flex gap-lg items-center">
+<span id="current-time">12:45:32</span>
+<span class="bg-primary-container px-2 py-0.5 rounded text-on-primary-container">v2.4.0-ARTISAN</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Clock Update
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('current-time').textContent = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Simulate new order flashing
+        const urgentCard = document.querySelector('.order-card-urgent');
+        if(urgentCard) {
+            setInterval(() => {
+                urgentCard.classList.toggle('bg-error-container/20');
+            }, 800);
+        }
+    </script>
+</body></html>

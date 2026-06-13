@@ -1,0 +1,304 @@
+<!DOCTYPE html><html class="light" lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Agregar Mesa - Bakery Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .artisanal-grain {
+            background-image: url("https://www.transparenttextures.com/patterns/felt.png");
+            opacity: 0.03;
+        }
+        .table-preview-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#745c00",
+                        "secondary": "#735c00",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#ffdbce",
+                        "primary": "#32170d",
+                        "surface": "#fff8f5",
+                        "on-tertiary-fixed": "#1d1c13",
+                        "primary-fixed-dim": "#ecbcaa",
+                        "tertiary-container": "#36342b",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fed65b",
+                        "on-background": "#201b17",
+                        "on-surface": "#201b17",
+                        "inverse-primary": "#ecbcaa",
+                        "surface-dim": "#e3d8d1",
+                        "surface-container-highest": "#ece0da",
+                        "on-tertiary-fixed-variant": "#49473d",
+                        "inverse-on-surface": "#faeee8",
+                        "surface-variant": "#ece0da",
+                        "on-secondary-fixed-variant": "#574500",
+                        "secondary-fixed": "#ffe088",
+                        "on-primary-fixed-variant": "#613e31",
+                        "on-primary-fixed": "#2e140a",
+                        "background": "#fff8f5",
+                        "surface-bright": "#fff8f5",
+                        "on-secondary-fixed": "#241a00",
+                        "inverse-surface": "#352f2b",
+                        "surface-tint": "#7b5647",
+                        "primary-container": "#4b2c20",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e8e2d4",
+                        "outline": "#83746f",
+                        "surface-container-low": "#fdf1eb",
+                        "tertiary-fixed-dim": "#cbc6b9",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#f7ece5",
+                        "tertiary": "#211f16",
+                        "surface-container-high": "#f2e6df",
+                        "on-primary-container": "#bf9282",
+                        "outline-variant": "#d5c3bd",
+                        "on-tertiary-container": "#a19c90",
+                        "on-surface-variant": "#504440"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "margin-desktop": "32px",
+                        "sm": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"],
+                        "headline-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "label-lg": ["Work Sans"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-sm": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen relative overflow-x-hidden">
+<div class="absolute inset-0 artisanal-grain pointer-events-none"></div>
+<!-- Top Navigation Bar -->
+<header class="w-full top-0 sticky z-40 flex items-center justify-between px-margin-mobile py-sm bg-surface shadow-sm transition-colors">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-headline-md">store</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Bakery Manager</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-label-lg overflow-hidden border-2 border-primary/10">
+<img alt="Manager Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqdZ9OtIke30gEjH_26TFUVm2oTh6L19KizcZl3axq5dgvqga5Cu5xNYtszw1BUSgIp393S87G4O9h2BoPHoCfS6-h3gUnMiHydzO0jCxESAgumaD8B1PF4jSbTxlRbr__2-QyP2KAytQHsQR6gF-yP0XZ0lPdH_xoJf_unbGLV5oAjjmm5WwTGXVhtGFh8GJ7exslWM0pLWxIrcepEnsVphL9dOFdUAmKlUYDfObKdepPWhaQro66TPLwXpOQg1nv2V46t_Zgqyzt">
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-margin-mobile md:px-margin-desktop py-lg mb-24">
+<!-- Header Section -->
+<div class="mb-xl flex items-center justify-between">
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-high transition-colors active:scale-95 duration-150" onclick="window.history.back()">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Agregar Mesa</h2>
+</div>
+<div class="hidden md:flex gap-sm">
+<button class="px-md py-sm border border-outline rounded-lg font-label-lg text-on-surface hover:bg-surface-container transition-colors">Back</button>
+<button class="px-md py-sm bg-primary text-on-primary rounded-lg font-label-lg hover:shadow-lg active:scale-95 transition-all">Confirm</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg lg:gap-xl">
+<!-- Left: Form Section -->
+<div class="md:col-span-7 bg-surface-container-lowest border border-outline-variant p-lg rounded-xl shadow-sm">
+<form class="space-y-lg" id="tableForm">
+<!-- Table Number -->
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-base" for="table_number">Nombre / Número de Mesa</label>
+<input class="w-full h-12 px-md bg-surface border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg font-label-sm transition-all outline-none" id="table_number" name="table_number" oninput="updatePreview()" placeholder="p. ej. Barra, Mesa 1" type="text">
+</div>
+<!-- Location -->
+
+<!-- Capacity -->
+
+<!-- Status Indicator Selection (Extra Context for "Artisanal Precision") -->
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-base">Default Status</label>
+<div class="flex gap-md">
+<label class="flex items-center gap-sm cursor-pointer">
+<input checked="" class="w-5 h-5 text-primary border-outline focus:ring-primary" name="status" onchange="updatePreview()" type="radio" value="available">
+<span class="font-label-lg text-on-surface">Available</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer">
+<input class="w-5 h-5 text-primary border-outline focus:ring-primary" name="status" onchange="updatePreview()" type="radio" value="reserved">
+<span class="font-label-lg text-on-surface">Reserved</span>
+</label>
+</div>
+</div>
+</form>
+</div>
+<!-- Right: Visual Preview Section -->
+<div class="md:col-span-5 flex flex-col items-center">
+<div class="sticky top-24 w-full">
+<h3 class="font-label-lg text-on-surface-variant mb-lg text-center uppercase tracking-widest">Visual Preview</h3>
+<!-- Table Card Preview -->
+<div class="table-preview-transition w-full max-w-[320px] mx-auto bg-white border-t-4 border-t-secondary-container rounded-xl shadow-lg p-lg flex flex-col gap-md relative overflow-hidden group" id="previewCard" style="border-top-color: rgb(254, 214, 91);">
+<!-- Artisanal Accent -->
+<div class="absolute -right-4 -top-4 w-16 h-16 bg-surface-container rounded-full group-hover:scale-110 transition-transform duration-500 opacity-50"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+
+<span class="font-headline-lg text-headline-lg text-primary" id="previewNumber">--</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" id="previewIcon">table_restaurant</span>
+</div>
+</div>
+
+<div class="mt-lg pt-md border-t border-outline-variant flex items-center justify-between">
+<div class="px-sm py-1 rounded-full bg-secondary-container/20 text-on-secondary-container text-label-sm font-semibold flex items-center gap-1" id="previewStatusBadge">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<span id="previewStatusText" class="">AVAILABLE</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</div>
+<!-- Contextual Help -->
+<div class="mt-xl p-md bg-secondary-container/10 border border-secondary-container/20 rounded-lg text-center">
+<p class="font-label-sm text-on-secondary-fixed-variant leading-relaxed">
+                            "Artisanal precision means every table is a promise of quality. Ensure numbers are unique to avoid overlap in the management grid."
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Footer Navigation -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-surface shadow-[0_-4px_12px_rgba(50,23,13,0.12)] z-50 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-label-lg text-label-lg">Workers</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2" href="#">
+<span class="material-symbols-outlined">table_restaurant</span>
+<span class="font-label-lg text-label-lg">Tables</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-lg text-label-lg">Profile</span>
+</a>
+</nav>
+<!-- Mobile Action Footer (Specific to this task) -->
+<div class="fixed bottom-[84px] left-0 w-full p-md bg-white border-t border-outline-variant md:hidden shadow-lg flex gap-md z-40">
+<button class="flex-1 py-md border border-outline rounded-lg font-label-lg text-on-surface active:scale-95 transition-all">Back</button>
+<button class="flex-1 py-md bg-primary text-on-primary rounded-lg font-label-lg shadow-sm active:scale-95 transition-all">Confirm</button>
+</div>
+<script>
+        let selectedLocation = "Main Hall";
+        let selectedCapacity = "2";
+
+        function setLocation(loc) {
+            selectedLocation = loc;
+            document.querySelectorAll('.location-btn').forEach(btn => {
+                if (btn.innerText.includes(loc)) {
+                    btn.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+                    btn.querySelector('.material-symbols-outlined').style.color = 'white';
+                } else {
+                    btn.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+                    btn.querySelector('.material-symbols-outlined').style.color = '#32170d';
+                }
+            });
+            updatePreview();
+        }
+
+        function setCapacity(cap) {
+            selectedCapacity = cap;
+            document.querySelectorAll('.cap-btn').forEach(btn => {
+                if (btn.innerText === cap) {
+                    btn.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+                }
+            });
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const num = document.getElementById('table_number').value || '--';
+            const status = document.querySelector('input[name="status"]:checked').value;
+            
+            document.getElementById('previewNumber').innerText = num;
+            document.getElementById('previewLocation').innerText = selectedLocation;
+            document.getElementById('previewCapacity').innerText = selectedCapacity + ' pax';
+            
+            const badge = document.getElementById('previewStatusBadge');
+            const statusText = document.getElementById('previewStatusText');
+            const statusDot = badge.querySelector('div');
+            const card = document.getElementById('previewCard');
+
+            if (status === 'available') {
+                badge.className = 'px-sm py-1 rounded-full bg-secondary-container/20 text-on-secondary-container text-label-sm font-semibold flex items-center gap-1';
+                statusDot.className = 'w-2 h-2 rounded-full bg-secondary-container';
+                statusText.innerText = 'AVAILABLE';
+                card.style.borderTopColor = '#fed65b';
+            } else {
+                badge.className = 'px-sm py-1 rounded-full bg-tertiary-container/20 text-on-tertiary-container text-label-sm font-semibold flex items-center gap-1';
+                statusDot.className = 'w-2 h-2 rounded-full bg-tertiary-container';
+                statusText.innerText = 'RESERVED';
+                card.style.borderTopColor = '#36342b';
+            }
+
+            // Simple bounce effect for update
+            card.classList.add('scale-105');
+            setTimeout(() => card.classList.remove('scale-105'), 150);
+        }
+
+        // Initialize defaults
+        document.addEventListener('DOMContentLoaded', () => {
+            setLocation('Main Hall');
+            setCapacity('2');
+            updatePreview();
+        });
+    </script>
+
+
+</body></html>
