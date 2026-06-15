@@ -286,6 +286,8 @@ CREATE TABLE comanda_det (
     descuento         DECIMAL(10,2) NOT NULL DEFAULT 0.00,      -- [? NUEVO]
     subtotal          DECIMAL(10,2) NOT NULL,                   -- [? NUEVO] (cantidad * precio_unitario) - descuento
     observacion_item  VARCHAR(255)  NULL,                       -- [? NUEVO] Nota del mozo por ítem ej: 'sin cebolla', 'término 3/4'
+    estado_item       VARCHAR(20)   NOT NULL DEFAULT 'PENDIENTE'-- [? NUEVO] Estado por producto
+        CHECK (estado_item IN ('PENDIENTE','EN_PREPARACION','LISTO','ENTREGADO')),
     sync_estado       TINYINT       NOT NULL DEFAULT 0,         -- [? SYNC] 0=pending,1=sincronizado,2=error
     sync_fecha        DATETIME2     NULL,                       -- [? SYNC] Última sincronización con la nube
     sync_intentos     INT           NOT NULL DEFAULT 0,         -- [? SYNC] Reintentos automáticos
