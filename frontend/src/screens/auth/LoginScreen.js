@@ -132,7 +132,7 @@ export default function LoginScreen() {
                 placeholderTextColor="#a19c90"
                 value={usuario}
                 onChangeText={setUsuario}
-                autoCapitalize="characters"
+                autoCapitalize="none"
                 autoCorrect={false}
               />
             </View>

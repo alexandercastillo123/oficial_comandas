@@ -7,26 +7,33 @@ import { formatCurrency } from '../utils/formatCurrency';
 export default function TicketCard({ ticket, onPress }) {
   const { nro_ticket, estado_comanda, total, fecha_creacion, nombre_cliente } = ticket;
 
-  let badgeColor = COLORS.warning;
-  let statusText = 'En Cocina';
+  const statusCfg = {
+    EN_COCINA: { color: COLORS.warning, label: 'En Cocina', dotText: '🍳' },
+    ENTREGADO: { color: COLORS.libre, label: 'Entregado', dotText: '✓' },
+    PRE_CUENTA: { color: COLORS.preCuenta, label: 'Pre-cuenta', dotText: '#' },
+    CERRADO:   { color: '#9e9e9e', label: 'Pagado', dotText: '✓' },
+    DEFAULT:   { color: '#cccccc', label: estado_comanda, dotText: '•' },
+  }[estado_comanda] || { color: '#cccccc', label: estado_comanda, dotText: '•' };
 
-  if (estado_comanda === 'ENTREGADO') {
-    badgeColor = COLORS.libre;
-    statusText = 'Entregado';
-  } else if (estado_comanda === 'PRE_CUENTA') {
-    badgeColor = COLORS.preCuenta;
-    statusText = 'Pre-cuenta';
-  } else if (estado_comanda === 'CERRADO') {
-    badgeColor = '#9e9e9e';
-    statusText = 'Pagado';
-  }
+  const dotBgStyle = { backgroundColor: statusCfg.color };
+  const isDelivered = estado_comanda === 'ENTREGADO';
+  const isPreCuenta = estado_comanda === 'PRE_CUENTA';
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
+    <TouchableOpacity
+      style={[styles.card, (isDelivered || isPreCuenta) && { borderLeftWidth: 4, borderLeftColor: statusCfg.color }]}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
       <View style={styles.header}>
-        <Text style={styles.ticketNum}>{nro_ticket}</Text>
-        <View style={[styles.badge, { backgroundColor: badgeColor }]}>
-          <Text style={styles.badgeText}>{statusText}</Text>
+        <View style={styles.headerLeft}>
+          <View style={[styles.dot, dotBgStyle]}>
+            <Text style={styles.dotText}>{statusCfg.dotText}</Text>
+          </View>
+          <View>
+            <Text style={styles.ticketNum}>{nro_ticket}</Text>
+            <Text style={styles.statusLabel}>{statusCfg.label}</Text>
+          </View>
         </View>
       </View>
 
@@ -58,37 +65,45 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   header: {
+    marginBottom: 8,
+  },
+  headerLeft: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3efea',
-    paddingBottom: 8,
-    marginBottom: 10,
+    gap: 10,
+  },
+  dot: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.warning,
+  },
+  dotText: {
+    color: '#ffffff',
+    fontSize: 13,
+    fontWeight: '900',
   },
   ticketNum: {
     fontSize: 16,
     fontWeight: '800',
     color: '#222222',
   },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-  },
-  badgeText: {
-    color: '#ffffff',
-    fontSize: 10,
-    fontWeight: '700',
+  statusLabel: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#666666',
+    marginTop: 2,
     textTransform: 'uppercase',
   },
   body: {
     marginBottom: 12,
+    gap: 4,
   },
   label: {
     fontSize: 13,
     color: '#666666',
-    marginVertical: 1,
   },
   value: {
     color: '#222222',

@@ -1,28 +1,26 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   View, Text, StyleSheet, FlatList,
-  ActivityIndicator, StatusBar, TouchableOpacity, Platform, Alert
+  ActivityIndicator, StatusBar
 } from 'react-native';
 import { useSSE } from '../../hooks/useSSE';
 import ComandaChefCard from '../../components/ComandaChefCard';
 import EmptyState from '../../components/EmptyState';
 import { COLORS } from '../../constants/colors';
 import { useResponsive } from '../../hooks/useResponsive';
-import { AuthContext } from '../../context/AuthContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ChefMonitorScreen() {
   const { comandas, loading, error } = useSSE();
   const { isTablet } = useResponsive();
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
-
-      {/* Header fijo de cocina */}
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <StatusBar barStyle="dark-content" translucent={false} backgroundColor="#ffffff" />
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Text style={styles.headerLogo}>🍞</Text>
-          <View style={{ flex: 1 }}>
+          <View>
             <Text style={styles.headerTitle} numberOfLines={1}>MONITOR DE COCINA</Text>
             <Text style={styles.headerSubtitle} numberOfLines={1}>La Ideal S.A.C. · En Tiempo Real</Text>
           </View>
@@ -38,14 +36,12 @@ export default function ChefMonitorScreen() {
         </View>
       </View>
 
-      {/* Estado de conexión */}
-      <View style={[styles.connectionBar, { backgroundColor: error ? '#ba1a1a' : '#2e7d32' }]}>
-        <Text style={styles.connectionText}>
-          {error ? '⚠️ Sin conexión con servidor' : '● Conectado y actualizando en tiempo real'}
-        </Text>
-      </View>
+      {error && (
+        <View style={styles.connectionBarError}>
+          <Text style={styles.connectionText}>⚠️ Sin conexión con servidor</Text>
+        </View>
+      )}
 
-      {/* Lista de comandas */}
       {loading && comandas.length === 0 ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color={COLORS.warning} />
@@ -53,7 +49,7 @@ export default function ChefMonitorScreen() {
         </View>
       ) : comandas.length === 0 ? (
         <View style={styles.center}>
-          <Text style={styles.emptyIcon}>✅</Text>
+          <Text style={styles.emptyIcon}>✓</Text>
           <Text style={styles.emptyTitle}>Cocina al día</Text>
           <Text style={styles.emptySubtitle}>No hay pedidos pendientes en este momento.</Text>
         </View>
@@ -65,47 +61,48 @@ export default function ChefMonitorScreen() {
           renderItem={({ item }) => <ComandaChefCard comanda={item} />}
           numColumns={isTablet ? 2 : 1}
           contentContainerStyle={styles.list}
-          // Sin onRefresh intencionalmente: el chef no debe interactuar
         />
       )}
 
-      {/* Footer informativo */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
           Orden de preparación: más antiguo → más reciente (FIFO)
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.bgScreen },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.bgScreen,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: Platform.OS === 'ios' ? 48 : 16,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e6e1da',
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    flex: 1,
+    gap: 10,
   },
-  headerLogo: { fontSize: 24 },
+  headerLogo: { fontSize: 22 },
   headerTitle: {
-    fontSize: 15,
-    fontWeight: '900',
-    color: COLORS.cream,
-    letterSpacing: 0.5,
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#222222',
+    letterSpacing: 0.3,
   },
   headerSubtitle: {
-    fontSize: 10,
-    color: COLORS.goldLight,
+    fontSize: 11,
+    color: '#745c00',
     fontWeight: '600',
     marginTop: 2,
   },
@@ -120,21 +117,21 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 48,
   },
   queueCount: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '900',
     color: '#ffffff',
-    lineHeight: 20,
+    lineHeight: 18,
   },
   queueLabel: {
     fontSize: 9,
     fontWeight: '800',
-    color: 'rgba(255,255,255,0.8)',
+    color: 'rgba(255,255,255,0.9)',
     letterSpacing: 1,
   },
-  connectionBar: {
+  connectionBarError: {
+    backgroundColor: '#ba1a1a',
     paddingVertical: 5,
     paddingHorizontal: 16,
     alignItems: 'center',

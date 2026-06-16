@@ -62,4 +62,6 @@ export const COLORS = {
   borderLight: '#EDD9B8',
   border: '#D4B896',
   bgScreen: '#F0E6D3',
+  libre: '#4A7C59',
+  preCuenta: '#2E6DA4',
 };

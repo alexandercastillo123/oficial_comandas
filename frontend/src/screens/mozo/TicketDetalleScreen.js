@@ -124,7 +124,7 @@ export default function TicketDetalleScreen({ route, navigation }) {
     setActionLoading(true);
     try {
       await comandasService.reimprimirComanda(id_comanda);
-      Alert.alert('✅ Reimpresión Enviada', 'El ticket fue enviado nuevamente a cocina.');
+      Alert.alert('Reimpresión Enviada', 'El ticket fue enviado nuevamente a cocina.');
     } catch (err) {
       Alert.alert('Error', 'No se pudo reimprimir el ticket.');
     } finally {
@@ -203,7 +203,7 @@ export default function TicketDetalleScreen({ route, navigation }) {
       <View style={styles.actions}>
         {isEnCocina && (
           <AppButton
-            title="✅  PEDIDO ENTREGADO"
+            title="✓ PEDIDO ENTREGADO"
             onPress={handleEntregar}
             loading={actionLoading}
           />
