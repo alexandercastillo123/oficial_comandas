@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { fail } = require('../utils/response');
+const requireRole = require('./roles');
 
 function verifyToken(req, res, next) {
   let token = null;
@@ -12,7 +13,6 @@ function verifyToken(req, res, next) {
     }
   }
 
-  // Fallback para parámetros de consulta (necesario para EventSource / SSE en la web)
   if (!token && req.query.token) {
     token = req.query.token;
   }
@@ -23,7 +23,7 @@ function verifyToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_jwt_key_la_ideal_2026');
-    req.user = decoded; // { id_usuario, usuario, rol_app, id_tienda }
+    req.user = decoded;
     next();
   } catch (error) {
     console.error('Error de verificación JWT:', error);
@@ -31,4 +31,7 @@ function verifyToken(req, res, next) {
   }
 }
 
-module.exports = verifyToken;
+module.exports = {
+  verifyToken,
+  requireRole
+};

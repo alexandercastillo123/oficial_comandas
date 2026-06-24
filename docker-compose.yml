@@ -8,6 +8,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Express
       - SA_PASSWORD=${DB_LOCAL_PASS}
+      - TZ=America/Lima
     ports:
       - "1435:1433"
     volumes:
@@ -35,6 +36,7 @@ services:
       - SYNC_UP_INTERVAL_MS=${SYNC_UP_INTERVAL_MS:-300000}
       - SYNC_USERS_INTERVAL_MS=${SYNC_USERS_INTERVAL_MS:-900000}
       - MAX_SYNC_RETRIES=${MAX_SYNC_RETRIES:-5}
+      - TZ=America/Lima
     ports:
       - "${API_PORT:-3000}:3000"
     volumes:

@@ -25,7 +25,13 @@ async function getTrabajador(req, res, next) {
 async function crearTrabajador(req, res, next) {
   try {
     const tiendaId = req.user.id_tienda;
-    const userId = await usuariosService.crearTrabajador(req.body, tiendaId);
+    const { hora_entrada, hora_salida, tolerancia_min, ...userData } = req.body;
+    const turnoData = {
+      hora_entrada,
+      hora_salida,
+      tolerancia_min: tolerancia_min || 15
+    };
+    const userId = await usuariosService.crearTrabajador(userData, tiendaId, turnoData, req.user.id_usuario);
     return ok(res, { id_usuario: userId, message: 'Trabajador creado correctamente' }, 201);
   } catch (error) {
     next(error);
@@ -35,7 +41,9 @@ async function crearTrabajador(req, res, next) {
 async function editarTrabajador(req, res, next) {
   try {
     const { id } = req.params;
-    await usuariosService.editarTrabajador(parseInt(id, 10), req.body);
+    const tiendaId = req.user.id_tienda;
+    const adminId = req.user.id_usuario;
+    await usuariosService.editarTrabajador(parseInt(id, 10), req.body, tiendaId, adminId);
     return ok(res, { message: 'Trabajador actualizado correctamente' });
   } catch (error) {
     next(error);

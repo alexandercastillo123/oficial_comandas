@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const comandasController = require('../controllers/comandas.controller');
-const verifyToken = require('../middleware/auth');
-const requireRole = require('../middleware/roles');
+const { verifyToken, requireRole } = require('../middleware/auth');
 const { createComandaValidator } = require('../validators/comandas.validator');
 
 router.get('/', verifyToken, requireRole(['ADMIN', 'MOZO']), comandasController.getComandas);

@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView,
-  Alert, KeyboardAvoidingView, Platform
+  Alert, KeyboardAvoidingView, Platform, ActivityIndicator
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { usuariosService } from '../../services/usuarios.service';
@@ -24,8 +24,38 @@ export default function TrabajadorFormScreen({ route, navigation }) {
   const [documento, setDocumento] = useState(trabajador?.documento_identidad || '');
   const [clave, setClave] = useState('');
   const [idCargo, setIdCargo] = useState(trabajador?.id_cargo || CARGOS_APP[0].id_cargo);
+  const [horaEntrada, setHoraEntrada] = useState(trabajador?.hora_entrada || '08:00');
+  const [horaSalida, setHoraSalida] = useState(trabajador?.hora_salida || '18:00');
+  const [tolerancia, setTolerancia] = useState(String(trabajador?.tolerancia_min ?? '15'));
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   const eliminando = useRef(false);
+
+  // En modo edición, cargar datos completos del trabajador (incluye turno)
+  useEffect(() => {
+    if (isEdit && trabajador?.id_usuario) {
+      setLoadingData(true);
+      usuariosService.getTrabajador(trabajador.id_usuario)
+        .then(data => {
+          if (data) {
+            setNombre(data.nombre || '');
+            setUsuario(data.usuario || '');
+            setTelefono(data.telefono || '');
+            setDocumento(data.documento_identidad || '');
+            setIdCargo(data.id_cargo || CARGOS_APP[0].id_cargo);
+            if (data.hora_entrada) setHoraEntrada(data.hora_entrada);
+            if (data.hora_salida) setHoraSalida(data.hora_salida);
+            if (data.tolerancia_min !== undefined && data.tolerancia_min !== null) {
+              setTolerancia(String(data.tolerancia_min));
+            }
+          }
+        })
+        .catch(err => {
+          console.log('Error al cargar datos completos del trabajador:', err);
+        })
+        .finally(() => setLoadingData(false));
+    }
+  }, []);
 
   const handleGuardar = async () => {
     if (!nombre.trim() || !usuario.trim()) {
@@ -46,7 +76,10 @@ export default function TrabajadorFormScreen({ route, navigation }) {
         telefono: telefono.trim() || null,
         documento_identidad: documento.trim() || null,
         id_cargo: idCargo,
-        ...(clave.trim() && { clave: clave.trim() })
+        ...(clave.trim() && { clave: clave.trim() }),
+        hora_entrada: horaEntrada,
+        hora_salida: horaSalida,
+        tolerancia_min: parseInt(tolerancia || '15', 10)
       };
 
       if (isEdit) {
@@ -105,6 +138,13 @@ export default function TrabajadorFormScreen({ route, navigation }) {
       style={{ flex: 1, backgroundColor: COLORS.bgScreen }}
     >
       <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.content, { flexGrow: 1 }]} keyboardShouldPersistTaps="handled">
+        {loadingData ? (
+          <View style={{ alignItems: 'center', paddingVertical: 40 }}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+            <Text style={{ marginTop: 12, color: COLORS.textMid, fontSize: 13 }}>Cargando datos del trabajador...</Text>
+          </View>
+        ) : (
+        <>
         <Text style={styles.sectionTitle}>Datos del Trabajador</Text>
 
         <AppInput
@@ -163,6 +203,38 @@ export default function TrabajadorFormScreen({ route, navigation }) {
           ))}
         </View>
 
+        <Text style={styles.sectionTitle}>Turno de Trabajo</Text>
+        <View style={styles.rowTurno}>
+          <View style={{ flex: 1 }}>
+            <AppInput
+              label="Hora Entrada (HH:MM)"
+              value={horaEntrada}
+              onChangeText={setHoraEntrada}
+              placeholder="08:00"
+              keyboardType="numbers-and-punctuation"
+              maxLength={5}
+            />
+          </View>
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <AppInput
+              label="Hora Salida (HH:MM)"
+              value={horaSalida}
+              onChangeText={setHoraSalida}
+              placeholder="18:00"
+              keyboardType="numbers-and-punctuation"
+              maxLength={5}
+            />
+          </View>
+        </View>
+        <AppInput
+          label="Tolerancia (min)"
+          value={tolerancia}
+          onChangeText={setTolerancia}
+          placeholder="15"
+          keyboardType="numeric"
+          maxLength={3}
+        />
+
         {isEdit && (
           <AppButton
             title="ELIMINAR TRABAJADOR"
@@ -185,6 +257,8 @@ export default function TrabajadorFormScreen({ route, navigation }) {
             variant="secondary"
             onPress={() => navigation.goBack()}
           />
+        )}
+        </>
         )}
       </ScrollView>
     </KeyboardAvoidingView>
@@ -225,5 +299,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.textMid,
     textTransform: 'uppercase',
+  },
+  rowTurno: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

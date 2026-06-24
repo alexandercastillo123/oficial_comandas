@@ -10,6 +10,7 @@ const productosRoutes = require('./routes/productos.routes');
 const comandasRoutes = require('./routes/comandas.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
 const sseRoutes = require('./routes/sse.routes');
+const asistenciaRoutes = require('./routes/asistencia.routes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/v1/productos', productosRoutes);
 app.use('/api/v1/comandas', comandasRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/sse', sseRoutes);
+app.use('/api/v1/asistencia', asistenciaRoutes);
 
 // Ruta de diagnóstico simple
 app.get('/health', (req, res) => {

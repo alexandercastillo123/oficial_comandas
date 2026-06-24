@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Control de Asistencia - Mozos Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#574500",
+                    "surface-container-high": "#f2e6df",
+                    "secondary-container": "#fed65b",
+                    "primary-fixed": "#ffdbce",
+                    "on-error": "#ffffff",
+                    "on-background": "#201b17",
+                    "tertiary-container": "#36342b",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#e8e2d4",
+                    "on-surface": "#201b17",
+                    "surface-variant": "#ece0da",
+                    "on-secondary-container": "#745c00",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#fdf1eb",
+                    "primary-fixed-dim": "#ecbcaa",
+                    "on-secondary-fixed": "#241a00",
+                    "background": "#fff8f5",
+                    "on-surface-variant": "#504440",
+                    "surface-container-highest": "#ece0da",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary": "#32170d",
+                    "on-primary-fixed-variant": "#613e31",
+                    "surface-container": "#f7ece5",
+                    "on-primary-container": "#bf9282",
+                    "surface-dim": "#e3d8d1",
+                    "surface-bright": "#fff8f5",
+                    "inverse-on-surface": "#faeee8",
+                    "outline": "#83746f",
+                    "on-primary-fixed": "#2e140a",
+                    "on-tertiary-fixed": "#1d1c13",
+                    "on-tertiary-container": "#a19c90",
+                    "primary-container": "#4b2c20",
+                    "inverse-primary": "#ecbcaa",
+                    "secondary": "#735c00",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#e9c349",
+                    "secondary-fixed": "#ffe088",
+                    "inverse-surface": "#352f2b",
+                    "outline-variant": "#d5c3bd",
+                    "on-primary": "#ffffff",
+                    "surface": "#fff8f5",
+                    "tertiary": "#211f16",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#cbc6b9",
+                    "surface-tint": "#7b5647",
+                    "on-tertiary-fixed-variant": "#49473d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "xs": "4px",
+                    "margin-desktop": "32px",
+                    "base": "4px",
+                    "md": "16px",
+                    "gutter": "16px",
+                    "sm": "8px",
+                    "margin-mobile": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "label-lg": ["Work Sans"],
+                    "body-md": ["Work Sans"],
+                    "body-lg": ["Work Sans"],
+                    "headline-lg": ["Manrope"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"letterSpacing": "0.5px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .bakery-pattern {
+            background-color: #fff8f5;
+            background-image:  radial-gradient(#e5ded0 0.5px, transparent 0.5px), radial-gradient(#e5ded0 0.5px, #fff8f5 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0,10px 10px;
+        }
+
+        .countdown-circle {
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface bakery-pattern min-h-screen text-on-surface font-body-md overflow-x-hidden pb-24">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-surface dark:bg-surface-dim shadow-sm flex items-center justify-between px-margin-mobile h-14 w-full">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform p-2 hover:bg-surface-variant/50 rounded-full">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Control de Asistencia</h1>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary" data-icon="restaurant">restaurant</span>
+</div>
+</header>
+<main class="max-w-md mx-auto px-margin-mobile pt-lg space-y-lg">
+<!-- User Info Section (Bento Style) -->
+<section class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center gap-md shadow-sm">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary-container font-bold overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a professional bakery staff member with a friendly smile, dressed in a clean white apron. The setting is a warm, softly lit bakery interior with shelves of fresh bread in the background. The visual style is warm, artisanal, and high-quality, emphasizing a professional yet welcoming atmosphere using soft cream and deep brown tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCImC6npHpVsnqkWnqF3ksAGsPF7YDcHnUUxyFVpilofXAJVo9cwp21EUGvd2qJ2RvL9Hz4hVpC4ZbpLTkwqOgC72bJO18pJddEKk-szkslgNUT6GNsNNqHqJRzhLFO-bJKYAxk_VaYTyAbJ94KLYfV4ZbjpI9tUL0VBzJK6eW-BIk5HUQDq_LknaFxccddbV4KjJLDhy30hlts7JVX5QHCgSLDY_MPvlKC4IpBKRkKROQChpVEyTf8hx4hsWXtHrkDYe9MAPTt9PwJ"/>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary">David Kim</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">#EMP-2024-089</p>
+</div>
+<div class="ml-auto">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">Activo</span>
+</div>
+</section>
+<!-- QR Code Section -->
+<section class="flex flex-col items-center">
+<div class="bg-white p-lg rounded-3xl shadow-[0_4px_24px_rgba(50,23,13,0.08)] border border-outline-variant relative overflow-hidden group">
+<div class="absolute inset-0 opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')]"></div>
+<div class="relative z-10 bg-white p-4 rounded-xl">
+<!-- QR Visual Placeholder -->
+<div class="w-56 h-56 bg-surface-container-high rounded-lg flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 grid grid-cols-8 grid-rows-8 gap-1 p-4">
+<!-- Simulated QR bits -->
+<script>
+                                for(let i=0; i<64; i++) {
+                                    const opacity = Math.random() > 0.5 ? 'bg-primary' : 'bg-transparent';
+                                    document.write(`<div class="w-full h-full ${opacity} rounded-[1px]"></div>`);
+                                }
+                            </script>
+</div>
+<div class="absolute w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-primary text-3xl">bakery_dining</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Timer Countdown -->
+<div class="mt-md flex flex-col items-center gap-2">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full">
+<div class="relative w-5 h-5">
+<svg class="w-full h-full -rotate-90">
+<circle cx="10" cy="10" fill="transparent" r="8" stroke="#d5c3bd" stroke-width="2"></circle>
+<circle class="countdown-circle" cx="10" cy="10" fill="transparent" id="timer-circle" r="8" stroke="#735c00" stroke-dasharray="50.24" stroke-dashoffset="0" stroke-width="2"></circle>
+</svg>
+</div>
+<p class="font-label-lg text-label-lg text-on-surface-variant">Código válido por <span class="text-secondary font-bold" id="seconds-counter">5</span>s</p>
+</div>
+<button class="text-secondary font-label-sm text-label-sm flex items-center gap-1 hover:underline active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                    Actualizar código
+                </button>
+</div>
+</section>
+<!-- Current Time Section -->
+<section class="text-center py-md">
+<div class="font-headline-lg text-headline-lg text-primary tracking-tight tabular-nums" id="digital-clock">
+                00:00:00
+            </div>
+<div class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-widest mt-1" id="current-date">
+                Jueves, 24 de Octubre
+            </div>
+</section>
+<!-- Action Button -->
+<section class="pt-sm">
+<button class="w-full h-14 bg-primary text-on-primary font-headline-sm text-headline-sm rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 hover:bg-primary-container">
+<span class="material-symbols-outlined">fingerprint</span>
+                Confirmar Asistencia
+            </button>
+<p class="text-center text-[11px] text-on-surface-variant/60 mt-4 leading-relaxed">
+                Asegúrese de estar dentro del rango GPS de la sucursal <br/> para validar su marca de entrada.
+            </p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-dim shadow-[0_-4px_12px_rgba(50,23,13,0.12)] border-t border-outline-variant z-50">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1 rounded-xl">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-sm text-label-sm">Mesas</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all px-4 py-1 rounded-xl">
+<span class="material-symbols-outlined" data-icon="chef_hat">chef_hat</span>
+<span class="font-label-sm text-label-sm">Cocina</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Perfil</span>
+</button>
+</nav>
+<script>
+        // Digital Clock Logic
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('es-ES', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: false 
+            });
+            document.getElementById('digital-clock').textContent = timeStr;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('es-ES', options);
+            document.getElementById('current-date').textContent = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // QR Timer Logic
+        let timeLeft = 5;
+        const circle = document.getElementById('timer-circle');
+        const counter = document.getElementById('seconds-counter');
+        const totalOffset = 50.24;
+
+        function updateTimer() {
+            if (timeLeft < 0) {
+                timeLeft = 5;
+            }
+            counter.textContent = timeLeft;
+            const offset = totalOffset - (timeLeft / 5) * totalOffset;
+            circle.style.strokeDashoffset = offset;
+            timeLeft--;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Micro-interaction for QR updates
+        document.querySelector('button.text-secondary').addEventListener('click', () => {
+            timeLeft = 5;
+            updateTimer();
+            // Simple visual feedback
+            const qrContainer = document.querySelector('.group');
+            qrContainer.classList.add('scale-95', 'opacity-50');
+            setTimeout(() => {
+                qrContainer.classList.remove('scale-95', 'opacity-50');
+            }, 150);
+        });
+    </script>
+</body></html>

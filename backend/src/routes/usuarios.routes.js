@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usuariosController = require('../controllers/usuarios.controller');
-const verifyToken = require('../middleware/auth');
-const requireRole = require('../middleware/roles');
+const { verifyToken, requireRole } = require('../middleware/auth');
 const {
   createWorkerValidator,
   updateWorkerValidator,

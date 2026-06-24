@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mesasController = require('../controllers/mesas.controller');
-const verifyToken = require('../middleware/auth');
-const requireRole = require('../middleware/roles');
+const { verifyToken, requireRole } = require('../middleware/auth');
 const {
   createMesaValidator,
   updateMesaValidator,

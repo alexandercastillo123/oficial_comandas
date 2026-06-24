@@ -8,6 +8,7 @@ const localConfig = {
   options: {
     encrypt: false,
     trustServerCertificate: true,
+    useUTC: false, // Usar hora local en lugar de UTC
   },
   pool: {
     max: 10,
@@ -24,6 +25,7 @@ const cloudConfig = {
   options: {
     encrypt: true,
     trustServerCertificate: false,
+    useUTC: false, // Usar hora local en lugar de UTC
   },
   pool: {
     max: 10,

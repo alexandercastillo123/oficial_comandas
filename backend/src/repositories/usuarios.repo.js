@@ -104,6 +104,7 @@ async function updatePerfil(userId, profileData) {
   let query = `
     UPDATE usuario 
     SET nombre = @nombre, 
+        direccion = @direccion,
         telefono = @telefono, 
         avatar_url = @avatarUrl,
         fecha_actualizacion = GETDATE()
@@ -112,6 +113,7 @@ async function updatePerfil(userId, profileData) {
   const req = pool.request()
     .input('userId', sql.Int, userId)
     .input('nombre', sql.VarChar, profileData.nombre)
+    .input('direccion', sql.VarChar, profileData.direccion || null)
     .input('telefono', sql.VarChar, profileData.telefono || null)
     .input('avatarUrl', sql.VarChar, profileData.avatar_url || null);
     

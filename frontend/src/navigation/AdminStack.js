@@ -16,6 +16,7 @@ import { COLORS } from '../constants/colors';
 import TicketsCerradosScreen from '../screens/admin/TicketsCerradosScreen';
 import TicketDetalleAdminScreen from '../screens/admin/TicketDetalleAdminScreen';
 import ComandasCocinaAdminScreen from '../screens/admin/ComandasCocinaAdminScreen';
+import AsistenciaScreen from '../screens/admin/AsistenciaScreen';
 
 const Tab = createBottomTabNavigator();
 const WorkerStack = createStackNavigator();
@@ -140,6 +141,15 @@ export default function AdminStack() {
           title: 'Mi Perfil',
           tabBarLabel: 'Perfil',
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account" size={24} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Asistencia"
+        component={AsistenciaScreen}
+        options={{
+          title: 'Asistencia',
+          tabBarLabel: 'Asistencia',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clock-check" size={24} color={color} />,
         }}
       />
     </Tab.Navigator>

@@ -681,7 +681,37 @@ INSERT INTO mesa (id_tienda, numero, capacidad, estado_mesa, estado, usuario_cre
     (11, 'Mesa 2', 4, 'LIBRE', 1, 1),
     (11, 'Mesa 3', 4, 'LIBRE', 1, 1),
     (11, 'Mesa 4', 4, 'LIBRE', 1, 1),
-    (11, 'Mesa 5', 4, 'LIBRE', 1, 1);
+     (11, 'Mesa 5', 4, 'LIBRE', 1, 1);
+GO
+
+CREATE TABLE turno_usuario (
+    id_turno_usuario INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL REFERENCES usuario(id_usuario),
+    id_tienda INT NOT NULL REFERENCES tienda(id_tienda),
+    hora_entrada TIME NOT NULL DEFAULT '08:00:00',
+    hora_salida TIME NOT NULL DEFAULT '18:00:00',
+    tolerancia_min INT NOT NULL DEFAULT 15,
+    estado BIT NOT NULL DEFAULT 1,
+    fecha_creacion DATETIME2 NOT NULL DEFAULT GETDATE(),
+    usuario_creacion INT NULL
+);
+GO
+
+CREATE TABLE asistencia (
+    id_asistencia INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL REFERENCES usuario(id_usuario),
+    id_tienda INT NOT NULL REFERENCES tienda(id_tienda),
+    tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('ENTRADA','SALIDA')),
+    fecha_hora DATETIME2 NOT NULL DEFAULT GETDATE(),
+    estado VARCHAR(20) NOT NULL DEFAULT 'REGISTRADO' CHECK (estado IN ('REGISTRADO','VALIDADO','RECHAZADO')),
+    qr_token VARCHAR(255) NOT NULL,
+    observacion VARCHAR(255) NULL,
+    usuario_creacion INT NULL
+);
+GO
+
+CREATE INDEX IX_asistencia_usuario_fecha ON asistencia(id_usuario, fecha_hora);
+CREATE INDEX IX_asistencia_qr_token ON asistencia(qr_token);
 GO
 
 /* ============================================================

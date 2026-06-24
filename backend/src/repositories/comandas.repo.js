@@ -7,8 +7,7 @@ async function listByMesa(mesaId, estado) {
   let query = `
     SELECT cc.id_comanda_cab, cc.nro_ticket, cc.id_mesa, cc.id_tienda, cc.id_usuario_mozo,
            cc.nombre_cliente, cc.estado_comanda, cc.subtotal, cc.igv, cc.total,
-           cc.reimpresiones, cc.observacion,
-           CONVERT(varchar(33), cc.fecha_creacion AT TIME ZONE 'UTC' AT TIME ZONE 'SA Pacific Standard Time', 127) as fecha_creacion,
+           cc.reimpresiones, cc.observacion, cc.fecha_creacion,
            u.nombre as mozo
     FROM comanda_cab cc
     JOIN usuario u ON cc.id_usuario_mozo = u.id_usuario
@@ -31,8 +30,7 @@ async function listCocina(tiendaId) {
   const pool = await getLocalPool();
   const query = `
     SELECT cc.id_comanda_cab, cc.nro_ticket, cc.id_mesa, cc.id_tienda, cc.id_usuario_mozo,
-           cc.nombre_cliente, cc.estado_comanda, cc.observacion,
-           CONVERT(varchar(33), cc.fecha_creacion AT TIME ZONE 'UTC' AT TIME ZONE 'SA Pacific Standard Time', 127) as fecha_creacion,
+           cc.nombre_cliente, cc.estado_comanda, cc.observacion, cc.fecha_creacion,
            m.numero as numero_mesa, u.nombre as mozo
     FROM comanda_cab cc
     JOIN mesa m ON cc.id_mesa = m.id_mesa
@@ -68,7 +66,7 @@ async function getById(cabId) {
   const query = `
     SELECT cc.id_comanda_cab, cc.nro_ticket, cc.id_mesa, cc.id_tienda, cc.id_usuario_mozo,
            cc.nombre_cliente, cc.estado_comanda, cc.subtotal, cc.igv, cc.total,
-           cc.reimpresiones, cc.observacion, CONVERT(varchar(33), cc.fecha_creacion AT TIME ZONE 'UTC' AT TIME ZONE 'SA Pacific Standard Time', 127) as fecha_creacion, m.numero as numero_mesa,
+           cc.reimpresiones, cc.observacion, cc.fecha_creacion, m.numero as numero_mesa,
            u.nombre as mozo
     FROM comanda_cab cc
     JOIN mesa m ON cc.id_mesa = m.id_mesa
@@ -105,7 +103,7 @@ async function createComanda(comandaData, totales) {
                                estado_comanda, subtotal, igv, total, observacion, fecha_creacion, usuario_creacion)
       OUTPUT INSERTED.id_comanda_cab
       VALUES (@nro_ticket, @id_mesa, @id_tienda, @id_usuario_mozo, @nombre_cliente,
-              'EN_COCINA', @subtotal, @igv, @total, @observacion, GETDATE(), @id_usuario_mozo)
+              'EN_COCINA', @subtotal, @igv, @total, @observacion, @fecha_creacion, @id_usuario_mozo)
     `;
      
     const reqCab = new sql.Request(transaction);
@@ -119,6 +117,7 @@ async function createComanda(comandaData, totales) {
       .input('igv', sql.Decimal(10, 2), totales.igv)
       .input('total', sql.Decimal(10, 2), totales.total)
       .input('observacion', sql.VarChar, comandaData.observacion || null)
+      .input('fecha_creacion', sql.DateTime2, new Date())
       .query(queryCab);
       
     const cabId = resultCab.recordset[0].id_comanda_cab;
@@ -130,9 +129,9 @@ async function createComanda(comandaData, totales) {
         INSERT INTO comanda_det (id_comanda_cab, id_producto, cantidad, precio_unitario,
                                  descuento, subtotal, observacion_item, estado_item, fecha_creacion)
         VALUES (@cabId, @id_producto, @cantidad, @precio_unitario,
-                @descuento, @subtotal, @observacion_item, 'PENDIENTE', GETDATE())
+                @descuento, @subtotal, @observacion_item, 'PENDIENTE', @fecha_creacion)
       `;
-       
+        
       const reqDet = new sql.Request(transaction);
       await reqDet
         .input('cabId', sql.Int, cabId)
@@ -142,9 +141,10 @@ async function createComanda(comandaData, totales) {
         .input('descuento', sql.Decimal(10, 2), item.descuento || 0)
         .input('subtotal', sql.Decimal(10, 2), subtotalItem)
         .input('observacion_item', sql.VarChar, item.observacion_item || null)
+        .input('fecha_creacion', sql.DateTime2, new Date())
         .query(queryDet);
     }
-    
+     
     // Cambiar estado de la mesa a 'OCUPADA'
     const queryMesa = `
       UPDATE mesa 
@@ -155,7 +155,7 @@ async function createComanda(comandaData, totales) {
     await reqMesa
       .input('id_mesa', sql.Int, comandaData.id_mesa)
       .query(queryMesa);
-       
+        
     await transaction.commit();
     return cabId;
   } catch (error) {
@@ -169,12 +169,13 @@ async function updateEstado(cabId, estadoComanda) {
   const query = `
     UPDATE comanda_cab 
     SET estado_comanda = @estadoComanda,
-        fecha_actualizacion = GETDATE()
+        fecha_actualizacion = @fechaActualizacion
     WHERE id_comanda_cab = @cabId
   `;
   await pool.request()
     .input('cabId', sql.Int, cabId)
     .input('estadoComanda', sql.VarChar, estadoComanda)
+    .input('fechaActualizacion', sql.DateTime2, new Date())
     .query(query);
 }
 
@@ -195,8 +196,7 @@ async function listByTienda(tiendaId, estado) {
   let query = `
     SELECT cc.id_comanda_cab, cc.nro_ticket, cc.id_mesa, cc.id_tienda, cc.id_usuario_mozo,
            cc.nombre_cliente, cc.estado_comanda, cc.subtotal, cc.igv, cc.total,
-           cc.reimpresiones, cc.observacion,
-           CONVERT(varchar(33), cc.fecha_creacion AT TIME ZONE 'UTC' AT TIME ZONE 'SA Pacific Standard Time', 127) as fecha_creacion,
+           cc.reimpresiones, cc.observacion, cc.fecha_creacion,
            u.nombre as mozo, m.numero as numero_mesa
     FROM comanda_cab cc
     JOIN usuario u ON cc.id_usuario_mozo = u.id_usuario
